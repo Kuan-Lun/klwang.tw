@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>尋伴年齡不錯位</title>
+    <script>
+        const maleAgeRanges = {
+            18: [19, 20], 19: [19, 20], 20: [19, 22], 21: [19, 24], 22: [19, 25],
+            23: [19, 26], 24: [19, 26], 25: [19, 27], 26: [21, 28], 27: [21, 31],
+            28: [21, 32], 29: [22, 33], 30: [23, 35], 31: [24, 36], 32: [25, 37],
+            33: [26, 37], 34: [26, 38], 35: [27, 39], 36: [27, 40], 37: [30, 41],
+            38: [31, 43], 39: [32, 45], 40: [33, 46], 41: [33, 46], 42: [35, 47],
+            43: [36, 49], 44: [38, 49], 45: [38, 49], 46: [38, 49], 47: [40, 49],
+            48: [40, 49], 49: [41, 49], 50: [43, 49], 51: [44, 49], 52: [44, 49],
+            53: [46, 49], 54: [47, 49], 55: [47, 49]
+        };
+
+        const femaleAgeRanges = {
+            17: [19, 20], 18: [19, 23], 19: [19, 25], 20: [19, 27], 21: [19, 29],
+            22: [19, 29], 23: [19, 33], 24: [20, 35], 25: [20, 37], 26: [24, 39],
+            27: [25, 41], 28: [25, 43], 29: [26, 45], 30: [28, 47], 31: [29, 48],
+            32: [30, 48], 33: [31, 51], 34: [32, 53], 35: [35, 54], 36: [35, 54],
+            37: [36, 54], 38: [39, 54], 39: [39, 54], 40: [41, 54], 41: [42, 54],
+            42: [44, 54], 43: [46, 54], 44: [48, 54], 45: [48, 54], 46: [50, 54],
+            47: [53, 53]
+        };
+
+        function updateAgeSelector() {
+            const gender = document.getElementById("gender").value;
+            const ageInput = document.getElementById("age");
+            const ageRangeHint = document.getElementById("age-range-hint");
+            const ageContainer = document.getElementById("age-container");
+            ageInput.value = ""; // 清空年齡輸入框
+
+            if (gender === "男") {
+                ageInput.min = 18;
+                ageInput.max = 55;
+                ageInput.placeholder = "請輸入18~55";
+                ageRangeHint.textContent = "可輸入範圍：18 ~ 55 歲";
+                ageContainer.style.display = "block";
+            } else if (gender === "女") {
+                ageInput.min = 17;
+                ageInput.max = 47;
+                ageInput.placeholder = "請輸入17~47";
+                ageRangeHint.textContent = "可輸入範圍：17 ~ 47 歲";
+                ageContainer.style.display = "block";
+            } else {
+                ageInput.value = "";
+                ageInput.removeAttribute("min");
+                ageInput.removeAttribute("max");
+                ageInput.placeholder = "";
+                ageRangeHint.textContent = "";
+                ageContainer.style.display = "none";
+            }
+        }
+
+        function findAgeRange() {
+            const gender = document.getElementById("gender").value;
+            const age = parseInt(document.getElementById("age").value);
+
+            let minAge, maxAge;
+            if (gender === "男") {
+                minAge = 18; maxAge = 55;
+            } else if (gender === "女") {
+                minAge = 17; maxAge = 47;
+            }
+
+            const result = document.getElementById("result");
+            result.innerHTML = ""; // 清空先前結果
+
+            if (!gender || isNaN(age)) {
+                result.textContent = "請選擇性別並輸入年齡。";
+                return;
+            }
+
+            if (age < minAge || age > maxAge) {
+                alert(`年齡請輸入${minAge}至${maxAge}之間的數字`);
+                return;
+            }
+
+            let range = null;
+            if (gender === "男") {
+                range = maleAgeRanges[age];
+            } else if (gender === "女") {
+                range = femaleAgeRanges[age];
+            }
+
+            if (range) {
+                const resultText = document.createElement("p");
+                resultText.textContent = `對你性別感興趣的異性年齡範圍：${range[0]} 至 ${range[1]} 歲`;
+
+                result.appendChild(resultText);
+            } else {
+                result.textContent = "無對應資料，請確認輸入是否正確。";
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>尋伴年齡不錯位</h1>
+    <form onsubmit="event.preventDefault(); findAgeRange();">
+        <label for="gender">你的性別：</label>
+        <select id="gender" onchange="updateAgeSelector()" required>
+            <option value="">請選擇</option>
+            <option value="男">男</option>
+            <option value="女">女</option>
+        </select>
+        <br><br>
+        <div id="age-container" style="display: none;">
+            <label for="age">你的年齡：</label>
+            <input type="number" id="age" required>
+            <span id="age-range-hint" style="color: #888; margin-left: 8px;"></span>
+            <br><br>
+            <button type="submit">查詢</button>
+        </div>
+        <br>
+        <div id="result" style="margin-top: 20px;"></div>
+        <a href="https://news.pts.org.tw/project/marriage-and-fertility-crisis/finding-your-other-half"
+            rel="help bookmark external" target="_blank" class="link__html">
+            資料來源：晚婚時代來臨 年過三十結婚成常態
+        </a>
+    </form>
+</body>
+
+</html>

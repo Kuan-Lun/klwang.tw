@@ -1,0 +1,21 @@
+# python
+ms-python.black-formatter
+ms-python.python
+ms-python.debugpy
+ms-python.mypy-type-checker
+ms-python.isort
+
+# shell
+foxundermoon.shell-format
+
+# toml
+tamasfe.even-better-toml
+
+# go
+golang.Go
+
+# markdown
+DavidAnson.vscode-markdownlint
+
+# plantuml
+jebbs.plantuml

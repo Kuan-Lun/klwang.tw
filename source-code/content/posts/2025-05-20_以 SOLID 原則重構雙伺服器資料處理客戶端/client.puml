@@ -1,0 +1,190 @@
+/'
+Step 1 Converter
+'/
+
+@startuml
+!theme crt-amber
+
+interface Converter {
+    + convert()
+}
+
+class ConvertA implements Converter
+class ConvertB implements Converter
+class ConvertC implements Converter
+@enduml
+
+/'
+Step 2 Stock
+'/
+
+@startuml
+!theme crt-amber
+
+abstract SocketClient <<context-managed>>
+
+class FetchClient {
+    + fetch()
+}
+
+class ResultClient {
+    + upload()
+}
+
+SocketClient <|-- FetchClient
+SocketClient <|-- ResultClient
+@enduml
+
+/'
+Step 3 Factory
+'/
+
+@startuml
+!theme crt-amber
+
+interface Converter {
+    + convert()
+}
+
+class ConvertA implements Converter
+class ConvertB implements Converter
+class ConvertC implements Converter
+
+class ConverterFactory {
+    {static} - registry : Map<String, Converter>
+    {static} + get(key : String) : Converter
+}
+
+ConverterFactory *-- ConvertA : "registry"
+ConverterFactory *-- ConvertB : "registry"
+ConverterFactory *-- ConvertC : "registry"
+
+@enduml
+
+@startuml
+!theme crt-amber
+
+abstract SocketClient <<context-managed>>
+
+class FetchClient {
+    + fetch()
+}
+
+class ResultClient {
+    + upload()
+}
+
+SocketClient <|-- FetchClient
+SocketClient <|-- ResultClient
+
+enum ClientRole {
+    FETCH : String
+    RESULT : String
+}
+
+class ClientFactory {
+    - client_role: ClientRole
+    - kwargs: dict
+    + create_client_opener(): () -> SocketClient
+}
+
+ClientRole <-- ClientFactory
+ClientFactory ..> FetchClient : creates
+ClientFactory ..> ResultClient : creates
+
+@enduml
+
+/'
+Step 4 ZhtTmsImporter
+'/
+
+@startuml
+!theme crt-amber
+
+interface Converter {
+    + convert()
+}
+
+class ClientFactory {
+    - client_role: ClientRole
+    - kwargs: dict
+    + create_client_opener(): () -> SocketClient
+}
+
+class ZhtTmsImporter <<context-managed>> {
+    - mappings: Map
+    - converter: Converter
+    - fetch_client_opener: () --> FetchClient
+    - result_client_opener: () --> ResultClient
+    + run(): void
+}
+
+ZhtTmsImporter --> Converter : uses
+ZhtTmsImporter ..> ClientFactory : injects openers for Fetch/Result
+
+@enduml
+
+/'
+最終結果
+'/
+
+@startuml
+!theme crt-amber
+
+interface Converter {
+    + convert()
+}
+
+class ConvertA implements Converter
+class ConvertB implements Converter
+class ConvertC implements Converter
+
+abstract SocketClient <<context-managed>>
+
+class FetchClient {
+    + fetch()
+}
+
+class ResultClient {
+    + upload()
+}
+
+SocketClient <|-- FetchClient
+SocketClient <|-- ResultClient
+
+class ConverterFactory {
+    {static} - registry : Map<String, Converter>
+    {static} + get(key : String) : Converter
+}
+
+ConverterFactory *-- ConvertA : "registry"
+ConverterFactory *-- ConvertB : "registry"
+ConverterFactory *-- ConvertC : "registry"
+
+enum ClientRole {
+    FETCH : String
+    RESULT : String
+}
+
+class ClientFactory {
+    - client_role: ClientRole
+    - kwargs: dict
+    + create_client_opener(): () -> SocketClient
+}
+
+ClientRole <-- ClientFactory
+ClientFactory ..> FetchClient : creates
+ClientFactory ..> ResultClient : creates
+
+class ZhtTmsImporter <<context-managed>> {
+    - mappings: Map
+    - converter: Converter
+    - fetch_client_opener: () --> FetchClient
+    - result_client_opener: () --> ResultClient
+    + run(): void
+}
+
+ZhtTmsImporter --> Converter : uses
+ZhtTmsImporter ..> ClientFactory : injects openers for Fetch/Result
+
+@enduml

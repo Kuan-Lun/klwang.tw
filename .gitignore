@@ -1,0 +1,25 @@
+# Ignore all subdirectories in current directory
+*/
+
+# Allow shell library
+!shell_lib/
+!shell_lib/**
+
+# Allow Zola project structure
+!source-code/
+!source-code/content/
+!source-code/content/**
+
+!source-code/static/
+!source-code/static/**
+
+!source-code/themes/
+!source-code/themes/*
+
+!source-code/config.toml
+
+# Ignore Windows thumbnail cache
+Thumbs.db
+
+# Ignore Synology NAS indexing folders
+@eaDir

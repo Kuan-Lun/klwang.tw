@@ -1,0 +1,63 @@
+# Set the theme for the site
+theme = "apollo"
+
+taxonomies = [{ name = "tags" }]
+
+# The URL the site will be built for
+base_url = "https://www.klwang.tw"
+
+# Whether to automatically compile all Sass files in the sass directory
+compile_sass = true
+
+# Whether to build a search index to be used later on by a JavaScript library
+build_search_index = true
+
+[search]
+include_title = true          # Include page titles in the search index
+include_description = true    # Include page descriptions in the search index
+include_path = true           # Include page URLs/paths in the search index
+include_content = true        # Include full page content in the search index
+index_format = "elasticlunr_json"  # Output index in elasticlunr-compatible JSON format
+
+[markdown]
+# Whether to do syntax highlighting
+# Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
+highlight_code = true
+
+[extra]
+# Put all your custom variables here
+
+theme = "toggle"
+
+# The path to the favicon
+favicon = "/icon/favicon.ico"
+
+# Whether to use a CDN for static files
+use_cdn = true
+
+socials = [
+    { name = "facebook", url = "https://www.facebook.com/kuanlun.wang", icon = "facebook" },
+    { name = "github", url = "https://github.com/Kuan-Lun", icon = "github" },
+    { name = "linkedin", url = "https://www.linkedin.com/in/kuanlunwang/", icon = "linkedin" },
+    { name = "orcid", url = "https://orcid.org/0009-0007-4707-708X", icon = "orcid" },
+    { name = "steam", url = "https://steamcommunity.com/profiles/76561198280525882/", icon = "steam" },
+    { name = "email", url = "mailto:social-media@klwang.tw", icon = "email" },
+]
+
+menu = [
+    { name = "/home", url = "/", weight = 1 },
+    { name = "/posts", url = "/posts", weight = 2 },
+    { name = "/tags", url = "/tags", weight = 3 },
+    { name = "/about", url = "/about", weight = 100 },
+    # Configure menu bar here
+]
+
+# Whether to enable the table of contents
+toc = true
+
+# Whether to enable fancy code blocks
+fancy_code = true
+
+# Whether to enable MathJax support
+mathjax = true
+mathjax_dollar_inline_enable = true
