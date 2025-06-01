@@ -32,9 +32,6 @@ theme = "toggle"
 # The path to the favicon
 favicon = "/icon/favicon.ico"
 
-# Whether to use a CDN for static files
-use_cdn = true
-
 socials = [
     { name = "facebook", url = "https://www.facebook.com/kuanlun.wang", icon = "facebook" },
     { name = "github", url = "https://github.com/Kuan-Lun", icon = "github" },
