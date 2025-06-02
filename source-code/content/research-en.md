@@ -13,7 +13,7 @@ template = "page.html"
 
   * Multivariate [pairs trading](https://www.investopedia.com/terms/p/pairstrade.asp) in real time
 
-    * [Review of Pairs Trading Strategies](/other/20160725-Review_of_Pairs_Trading_Strategies.pdf) (undergraduate level, 30 minutes)
+    * [Review of Pairs Trading Strategies](https://onlinelibrary.wiley.com/doi/10.1111/joes.12153)
     * Statistical Arbitrage Pairs Trading Strategies: Review and Outlook (by [Kai-Chen Chuang](https://finance.lab.nycu.edu.tw/Students/105%E8%8E%8A%E5%87%B1%E8%87%A3/))
   * Search for assets with a long-run equilibrium
   * Building of riskless portfolios
