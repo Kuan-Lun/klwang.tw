@@ -27,7 +27,7 @@ highlight_code = true
 [extra]
 # Put all your custom variables here
 
-theme = "toggle"
+theme = "dark"
 
 # The path to the favicon
 favicon = "/icon/favicon.ico"
