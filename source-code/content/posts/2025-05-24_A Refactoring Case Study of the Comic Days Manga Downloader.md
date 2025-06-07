@@ -1,5 +1,6 @@
 +++
 title = "Applying SOLID Principles: A Refactoring Case Study of the Comic Days Manga Downloader"
+description = "An English-translated case study that applies SOLID principles to refactor an open-source Go manga downloader, showcasing clean architecture and design improvements."
 slug = "comicdays-en"
 date = "2025-05-24"
 
