@@ -8,9 +8,9 @@ date = "2025-05-24"
 tags = ["SOLID", "重構", "設計模式", "Go"]
 +++
 
-# Preface
-
 This article is an English translation of a [Chinese version](/posts/comicdays-zhtw/), translated using ChatGPT-4o. If you notice any errors or inaccuracies, feel free to [contact me via email](mailto:polyphonicared@gmail.com).
+
+# Preface
 
 This case study is a refactoring of the open-source GitHub project [`ComicDaysGoDownloader`](https://github.com/MrShitFox/ComicDaysGoDownloader), based on its initial version from commit [`c219073`](https://github.com/MrShitFox/ComicDaysGoDownloader/commit/c2190734d1018c1ab421b346ccad10a475386ac0).
 
