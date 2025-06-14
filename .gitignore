@@ -18,6 +18,9 @@
 
 !source-code/config.toml
 
+# Ignore Zola processed images (auto-generated during build)
+source-code/static/processed_images/
+
 # Ignore Windows thumbnail cache
 Thumbs.db
 
