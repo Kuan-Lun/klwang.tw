@@ -6,6 +6,7 @@ updated = "2025-05-30"
 
 [taxonomies]
 tags = ["SOLID", "Python", "Socket"]
+authors = ["王冠倫"]
 +++
 
 # 題目背景
