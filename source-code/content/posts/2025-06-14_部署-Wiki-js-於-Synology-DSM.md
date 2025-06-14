@@ -5,6 +5,7 @@ date = 2025-06-14
 
 [taxonomies]
 tags = ["Wiki.js", "docker", "linuxserver.io", "Synology"]
+authors = ["王冠倫"]
 +++
 
 在上一篇[文章](/posts/choose-wikijs-for-selfhosted-knowledge-base/)中已說明[選擇標準](/posts/choose-wikijs-for-selfhosted-knowledge-base/#xuan-ze-biao-zhun)，並分析為何 Wiki.js 相較於 BookStack、DokuWiki 等知識庫系統更符合需求。本篇將說明如何在 **Synology DSM 環境**（即 Synology NAS 的作業系統）中透過 Docker Compose 部署 Wiki.js，並說明為何選用 **[LinuxServer.io 映像](https://hub.docker.com/r/linuxserver/wikijs)與 PostgreSQL 資料庫**，以解決 [Wiki.js 官方映像 `ghcr.io/requarks/wiki`](https://hub.docker.com/r/requarks/wiki) 在 Synology DSM 上常見的**權限錯誤問題**。

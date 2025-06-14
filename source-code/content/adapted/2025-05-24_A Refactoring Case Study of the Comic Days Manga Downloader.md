@@ -6,6 +6,7 @@ date = "2025-05-24"
 
 [taxonomies]
 tags = ["SOLID", "重構", "設計模式", "Go"]
+authors = ["王冠倫"]
 +++
 
 This article is an English translation of a [Chinese version](/posts/comicdays-zhtw/), translated using ChatGPT-4o. If you notice any errors or inaccuracies, feel free to [contact me via email](mailto:polyphonicared@gmail.com).
