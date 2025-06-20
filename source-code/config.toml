@@ -1,7 +1,10 @@
 # Set the theme for the site
 theme = "apollo"
 
-taxonomies = [{ name = "tags" }]
+taxonomies = [
+    { name = "tags" },
+    { name = "authors"},
+]
 
 # The URL the site will be built for
 base_url = "https://www.klwang.tw"

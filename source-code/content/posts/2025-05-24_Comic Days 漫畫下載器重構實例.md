@@ -5,6 +5,7 @@ date = "2025-05-24"
 
 [taxonomies]
 tags = ["SOLID", "重構", "設計模式", "Go"]
+authors = ["王冠倫"]
 +++
 
 # 前言
