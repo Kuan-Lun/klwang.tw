@@ -2,6 +2,7 @@
 title = "當最富有的一代老去：人口結構如何改寫金融邏輯"
 slug = "tw-elder-wealth-risk"
 date = "2024-06-19"
+updated = "2025-06-20"
 
 [taxonomies]
 tags = ["人口老化", "銀髮經濟", "高齡化社會", "資產分配"]
