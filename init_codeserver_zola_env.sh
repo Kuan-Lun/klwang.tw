@@ -36,6 +36,11 @@ auto_apt_update_upgrade "$SUDO_TOKEN"
 # Ensure required packages are installed
 ensure_packages_installed "$SUDO_TOKEN" "rsync" "python3" "python3-pip" "golang-go"
 
+# Install Rust and its toolchain
+curl https://sh.rustup.rs -sSf | sh -s -- -y
+source $HOME/.cargo/env
+ensure_packages_installed "$SUDO_TOKEN" "liblapack-dev"
+
 # Install Code Server extensions listed in extensions.txt
 install_codeserver_extensions "$SCRIPT_DIR/extensions.txt"
 
