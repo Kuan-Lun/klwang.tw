@@ -3,6 +3,7 @@
 
 {
     "workbench.colorTheme": "Visual Studio Dark",
+    "editor.formatOnSave": true,
     "plantuml.render": "PlantUMLServer",
     "plantuml.server": "http://plantuml:8080"
 }
