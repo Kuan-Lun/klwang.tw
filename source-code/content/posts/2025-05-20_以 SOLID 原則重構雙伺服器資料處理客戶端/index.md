@@ -359,9 +359,22 @@ authors = ["王冠倫"]
 
 <details open>
 <summary>UML</summary>
+{% mermaid() %}
+classDiagram
+    interface Converter
+    Converter : +convert()*
 
-![Converter](step-1_converter.png)
+    class ConvertA
+    ConvertA : +convert()
+    class ConvertB
+    ConvertB : +convert()
+    class ConvertC
+    ConvertC : +convert()
 
+    Converter <|.. ConvertA
+    Converter <|.. ConvertB
+    Converter <|.. ConvertC
+{% end %}
 </details>
 
 <details close>
