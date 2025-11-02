@@ -3,6 +3,7 @@
     "editor.codeActionsOnSave": {
         "source.fixAll": "explicit"
     },
+    "workbench.colorTheme": "Visual Studio Dark",
     "files.autoSave": "onWindowChange",
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": true,
