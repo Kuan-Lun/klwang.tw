@@ -15,6 +15,7 @@ template = "page.html"
 
 ## Youtube
 
+- [原子能](https://www.youtube.com/@yuan_zi_neng)
 - [孫佬 Mr. Sun Official](https://www.youtube.com/@sunlao)
 - [码农高天](https://www.youtube.com/@minkoder)
 - [X博士](https://www.youtube.com/@doctorx2023)
