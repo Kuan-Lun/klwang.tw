@@ -5,6 +5,7 @@ template = "page.html"
 
 # Podcast
 
+- [蛋小黃](https://www.youtube.com/@%E8%9B%8B%E5%B0%8F%E9%BB%84)
 - [吉祥八卦兔](https://www.youtube.com/@%E5%90%89%E7%A5%A5%E5%85%AB%E5%8D%A6%E5%85%94)
 - [老范講故事](https://www.youtube.com/@StorytellerFan)
 - [Tinyfool的胡说八道](https://www.youtube.com/@tinyfoolvoice)
