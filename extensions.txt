@@ -24,3 +24,6 @@ jebbs.plantuml
 
 # icons
 vscode-icons-team.vscode-icons
+
+# anthropic
+anthropic.claude-code
