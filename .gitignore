@@ -1,6 +1,10 @@
 # Ignore all subdirectories in current directory
 */
 
+# Allow VSCode settings
+!.vscode/
+!.vscode/**
+
 # Allow shell library
 !shell_lib/
 !shell_lib/**
