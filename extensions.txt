@@ -1,9 +1,8 @@
 # python
-ms-python.black-formatter
 ms-python.python
-ms-python.debugpy
+charliermarsh.ruff
+ms-python.black-formatter
 ms-python.mypy-type-checker
-ms-python.isort
 
 # shell
 foxundermoon.shell-format
@@ -22,3 +21,6 @@ DavidAnson.vscode-markdownlint
 
 # plantuml
 jebbs.plantuml
+
+# icons
+vscode-icons-team.vscode-icons
