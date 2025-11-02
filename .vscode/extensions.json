@@ -9,6 +9,7 @@
         "tamasfe.even-better-toml",
         "foxundermoon.shell-format",
         "davidanson.vscode-markdownlint",
-        "vscode-icons-team.vscode-icons"
+        "vscode-icons-team.vscode-icons",
+        "anthropic.claude-code"
     ]
 }
