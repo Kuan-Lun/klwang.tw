@@ -1,5 +1,5 @@
 +++
-title = "趨勢科技職缺內推指南"
+title = "趨勢科技職缺內推指南 (不再受理內推)"
 slug = "jb4trendmicro"
 date = "2025-09-01"
 updated = "2025-09-13"
@@ -39,7 +39,7 @@ authors = ["王冠倫"]
 
 ## 申請流程
 
-1. 寄送申請信件至 [kuanlun_wang@trendmicro.com](mailto:kuanlun_wang@trendmicro.com)  
+1. 寄送申請信件至 ~~[kuanlun_wang@trendmicro.com](mailto:kuanlun_wang@trendmicro.com)~~
    主旨範例：`[內推] 王大明 (r12345678)`
 1. 一次附上完整資料（見下小一節），我會先回覆確認並提供初步建議。
 1. 確認後進行內推，若您同意，我將提交內推，並在有進度時更新您。
