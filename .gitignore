@@ -30,3 +30,6 @@ Thumbs.db
 
 # Ignore Synology NAS indexing folders
 @eaDir
+
+# Ignore macOS system files
+.DS_Store
