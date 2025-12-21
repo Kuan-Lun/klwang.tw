@@ -2,7 +2,7 @@
 title = "趨勢科技職缺內推指南 (不再受理內推)"
 slug = "jb4trendmicro"
 date = "2025-09-01"
-updated = "2025-09-13"
+updated = "2025-11-28"
 template = "page.html"
 
 [taxonomies]
