@@ -1,11 +1,5 @@
 {
     "recommendations": [
-        "golang.Go",
-        "rust-lang.rust-analyzer",
-        "ms-python.python",
-        "charliermarsh.ruff",
-        "ms-python.black-formatter",
-        "ms-python.mypy-type-checker",
         "tamasfe.even-better-toml",
         "foxundermoon.shell-format",
         "davidanson.vscode-markdownlint",
