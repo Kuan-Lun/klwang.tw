@@ -34,7 +34,7 @@ source "$SCRIPT_DIR/shell_lib/deps_installer.sh"
 auto_apt_update_upgrade "$SUDO_TOKEN"
 
 # Ensure required packages are installed
-ensure_packages_installed "$SUDO_TOKEN" "rsync" "python3" "python3-pip" "golang-go"
+ensure_packages_installed "$SUDO_TOKEN" "rsync"
 
 # Install Rust and its toolchain
 curl https://sh.rustup.rs -sSf | sh -s -- -y
