@@ -1,9 +1,6 @@
 // This file defines default settings for code-server,
 // including recommended theme and extension behavior for collaborators.
-
 {
     "workbench.colorTheme": "Visual Studio Dark",
-    "editor.formatOnSave": true,
-    "plantuml.render": "PlantUMLServer",
-    "plantuml.server": "http://plantuml:8080"
+    "editor.formatOnSave": true
 }
