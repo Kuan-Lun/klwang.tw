@@ -33,9 +33,6 @@ source "$SCRIPT_DIR/shell_lib/deps_installer.sh"
 # Update and upgrade apt packages
 auto_apt_update_upgrade "$SUDO_TOKEN"
 
-# Ensure required packages are installed
-ensure_packages_installed "$SUDO_TOKEN" "rsync"
-
 # Install Rust and its toolchain
 curl https://sh.rustup.rs -sSf | sh -s -- -y
 source $HOME/.cargo/env
