@@ -7,8 +7,5 @@ tamasfe.even-better-toml
 # markdown
 DavidAnson.vscode-markdownlint
 
-# icons
-vscode-icons-team.vscode-icons
-
 # anthropic
 anthropic.claude-code
