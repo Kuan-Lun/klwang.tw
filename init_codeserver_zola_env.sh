@@ -25,7 +25,7 @@ SCRIPT_PATH="$(readlink -f "$0")"
 SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
 
 # Zola .deb package URL
-ZOLA_DEB_URL="https://github.com/barnumbirr/zola-debian/releases/download/v0.21.0-1/zola_0.21.0-1_amd64_bookworm.deb"
+ZOLA_DEB_URL="https://github.com/barnumbirr/zola-debian/releases/download/v0.22.1-1/zola_0.22.1-1_amd64_trixie.deb"
 
 # Load shared shell functions
 source "$SCRIPT_DIR/shell_lib/deps_installer.sh"
