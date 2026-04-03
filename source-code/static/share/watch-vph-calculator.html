@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>機械錶秒針步進 VPH 計算器</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", sans-serif;
+            background: #f0f2f5;
+            color: #1a1a1a;
+            line-height: 1.6;
+            padding: 24px 16px;
+        }
+
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .field {
+            margin-bottom: 14px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .field label .unit {
+            font-weight: 400;
+            color: #888;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d0d0d0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .field input:focus {
+            outline: none;
+            border-color: #4a90d9;
+            box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.15);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+
+        /* 結果區 */
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.95rem;
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            color: #555;
+        }
+
+        .result-value {
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .result-highlight {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #2563eb;
+            text-align: center;
+            padding: 16px 0 12px;
+        }
+
+        .error-msg {
+            color: #dc2626;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.9rem;
+        }
+
+        /* 比較表格 */
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .compare-table th,
+        .compare-table td {
+            padding: 8px 10px;
+            text-align: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .compare-table th {
+            font-weight: 600;
+            color: #555;
+            font-size: 0.85rem;
+            background: #fafafa;
+        }
+
+        .compare-table td:first-child {
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .badge-pass {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-near {
+            background: #fef9c3;
+            color: #854d0e;
+        }
+
+        .badge-fail {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .notes {
+            font-size: 0.82rem;
+            color: #777;
+            margin-top: 12px;
+        }
+
+        .notes li {
+            margin-bottom: 4px;
+        }
+
+        #result-section {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <h1>機械錶秒針步進 VPH 計算器</h1>
+        <p class="subtitle">根據視距、秒針長度與視覺門檻，估算秒針步進若想接近肉眼難辨，機械錶理論上需要的 vph。</p>
+
+        <!-- 輸入區 -->
+        <div class="card">
+            <h2>參數設定</h2>
+            <div class="field">
+                <label>視距 D <span class="unit">(cm)</span></label>
+                <input type="number" id="input-d" value="30" step="any" min="0">
+            </div>
+            <div class="field">
+                <label>秒針長度 r <span class="unit">(mm)</span></label>
+                <input type="number" id="input-r" value="10.8" step="any" min="0">
+            </div>
+            <div class="field">
+                <label>視覺門檻 &phi; <span class="unit">(arcmin，角分)</span></label>
+                <input type="number" id="input-phi" value="1.5" step="any" min="0">
+            </div>
+            <div class="buttons">
+                <button class="btn btn-primary" id="btn-calc" onclick="calculate()">開始計算</button>
+                <button class="btn btn-secondary" onclick="resetForm()">重設</button>
+            </div>
+        </div>
+
+        <!-- 結果區 -->
+        <div id="result-section">
+            <div class="card" id="result-card"></div>
+            <div class="card" id="compare-card"></div>
+        </div>
+
+        <!-- 註記 -->
+        <div class="card">
+            <h2>假設與說明</h2>
+            <ul class="notes">
+                <li>一般機械錶中，秒針每小時步進數約為振頻（vph）的一半。</li>
+                <li>本工具僅為理論估算，實際感受仍受背景、注意力、光線等因素影響。</li>
+                <li>視覺門檻 1 arcmin 約為正常視力極限，1.5 arcmin 為較保守估計。</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script>
+        /**
+         * 機械錶秒針步進 VPH 計算器
+         *
+         * 核心公式：
+         *   vph = 120π / arcsin( D·tan(φ) / (2r) )
+         *
+         * 其中：
+         *   D = 視距（mm，使用者輸入 cm 後轉換）
+         *   r = 秒針長度（mm）
+         *   φ = 視覺門檻（弧度，使用者輸入 arcmin 後轉換）
+         *
+         * 推導步驟：
+         *   1. 最小可辨位移 L = D · tan(φ)
+         *   2. 步進角 Δ = 2·arcsin(L / (2r)) = 2·arcsin(D·tan(φ) / (2r))
+         *   3. 秒針角速度 ω = π/30 rad/s
+         *   4. 每秒步進次數 f = ω / Δ = π / (30·Δ)
+         *   5. vph = 7200·f = 7200·π / (30·Δ) = 240π / Δ
+         *      由 Δ = 2·arcsin(...) 代入得 vph = 120π / arcsin(D·tan(φ) / (2r))
+         */
+
+        /* 比較用的常見振頻 */
+        const COMMON_VPH = [18000, 21600, 28800, 36000];
+
+        /**
+         * 判定標準：
+         *   - 達標：vph >= 理論所需
+         *   - 接近：vph >= 理論所需 × 0.85
+         *   - 不足：vph < 理論所需 × 0.85
+         */
+        const NEAR_THRESHOLD = 0.85;
+
+        function calculate() {
+            var resultSection = document.getElementById('result-section');
+            var resultCard = document.getElementById('result-card');
+
+            /* 讀取輸入 */
+            var dCm = parseFloat(document.getElementById('input-d').value);
+            var rMm = parseFloat(document.getElementById('input-r').value);
+            var phiArcmin = parseFloat(document.getElementById('input-phi').value);
+
+            /* 輸入驗證 */
+            if (isNaN(dCm) || dCm <= 0) {
+                showError('請輸入大於 0 的視距。');
+                return;
+            }
+            if (isNaN(rMm) || rMm <= 0) {
+                showError('請輸入大於 0 的秒針長度。');
+                return;
+            }
+            if (isNaN(phiArcmin) || phiArcmin <= 0) {
+                showError('請輸入大於 0 的視覺門檻。');
+                return;
+            }
+
+            /* 單位轉換 */
+            // D: cm → mm
+            var dMm = dCm * 10;
+
+            // φ: arcmin → radian
+            // φ_rad = φ_arcmin × π / (180 × 60)
+            var phiRad = phiArcmin * Math.PI / (180 * 60);
+
+            /* 計算最小可辨位移 L = D · tan(φ)，單位 mm */
+            var L = dMm * Math.tan(phiRad);
+
+            /* 計算 arcsin 的輸入值 */
+            var asinArg = L / (2 * rMm);   // = D·tan(φ) / (2r)
+
+            /* 驗證 arcsin 輸入範圍 */
+            if (asinArg >= 1) {
+                showError('目前參數下無法計算，因為 arcsin 的輸入值超出範圍。秒針長度過短或視距過大，導致此公式無有效解。');
+                return;
+            }
+
+            /* 步進角 Δ = 2 · arcsin(D·tan(φ) / (2r)) */
+            var delta = 2 * Math.asin(asinArg);
+
+            /* 每秒步進次數 f = π / (30 · Δ) */
+            var f = Math.PI / (30 * delta);
+
+            /* vph = 120π / arcsin(D·tan(φ) / (2r))
+             * 等價於 7200 × f */
+            var vph = 120 * Math.PI / Math.asin(asinArg);
+
+            /* 步進角轉角度 */
+            var deltaDeg = delta * 180 / Math.PI;
+
+            /* 顯示結果 */
+            resultSection.style.display = 'block';
+
+            resultCard.innerHTML =
+                '<h2>計算結果</h2>' +
+                '<div class="result-highlight">' + formatNumber(Math.round(vph)) + ' vph</div>' +
+                '<div class="result-row"><span class="result-label">每秒步進次數 f</span><span class="result-value">' + f.toFixed(2) + ' 次/秒</span></div>' +
+                '<div class="result-row"><span class="result-label">每步角度 &Delta;（弧度）</span><span class="result-value">' + delta.toFixed(6) + ' rad</span></div>' +
+                '<div class="result-row"><span class="result-label">每步角度 &Delta;（角度）</span><span class="result-value">' + deltaDeg.toFixed(4) + '&deg;</span></div>' +
+                '<div class="result-row"><span class="result-label">最小可辨位移 L</span><span class="result-value">' + L.toFixed(4) + ' mm</span></div>';
+
+            /* 比較表格 */
+            var compareCard = document.getElementById('compare-card');
+            var html = '<h2>常見振頻比較</h2>' +
+                '<table class="compare-table">' +
+                '<tr><th>振頻</th><th>差距</th><th>判定</th></tr>';
+
+            for (var i = 0; i < COMMON_VPH.length; i++) {
+                var cv = COMMON_VPH[i];
+                var diff = cv - Math.round(vph);
+                var ratio = cv / vph;
+                var badge, label;
+
+                if (ratio >= 1) {
+                    badge = 'badge-pass';
+                    label = '達標';
+                } else if (ratio >= NEAR_THRESHOLD) {
+                    badge = 'badge-near';
+                    label = '接近';
+                } else {
+                    badge = 'badge-fail';
+                    label = '不足';
+                }
+
+                html += '<tr>' +
+                    '<td>' + formatNumber(cv) + ' vph</td>' +
+                    '<td>' + (diff >= 0 ? '+' : '') + formatNumber(diff) + '</td>' +
+                    '<td><span class="badge ' + badge + '">' + label + '</span></td>' +
+                    '</tr>';
+            }
+
+            html += '</table>';
+            compareCard.innerHTML = html;
+
+            /* 滾動到結果 */
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function showError(msg) {
+            var resultSection = document.getElementById('result-section');
+            var resultCard = document.getElementById('result-card');
+            var compareCard = document.getElementById('compare-card');
+            resultSection.style.display = 'block';
+            resultCard.innerHTML = '<div class="error-msg">' + msg + '</div>';
+            compareCard.innerHTML = '';
+        }
+
+        function resetForm() {
+            document.getElementById('input-d').value = '30';
+            document.getElementById('input-r').value = '10.8';
+            document.getElementById('input-phi').value = '1.5';
+            document.getElementById('result-section').style.display = 'none';
+        }
+
+        /** 千分位格式化 */
+        function formatNumber(n) {
+            return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        /** 按 Enter 觸發計算 */
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') calculate();
+        });
+    </script>
+</body>
+
+</html>
