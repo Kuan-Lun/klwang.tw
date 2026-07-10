@@ -5,4 +5,7 @@
     },
     "workbench.colorTheme": "Visual Studio Dark",
     "files.autoSave": "onWindowChange",
+    "markdownlint.config": {
+        "MD060": false
+    },
 }
