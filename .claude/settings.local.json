@@ -16,7 +16,8 @@
       "Skill(update-config:*)",
       "WebFetch(domain:news.pts.org.tw)",
       "WebFetch(domain:www.ftvnews.com.tw)",
-      "WebFetch(domain:www.storm.mg)"
+      "WebFetch(domain:www.storm.mg)",
+      "WebFetch(domain:udn.com)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
