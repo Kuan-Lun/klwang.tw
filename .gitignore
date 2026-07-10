@@ -8,6 +8,8 @@
 # Allow shell library
 !shell_lib/
 !shell_lib/**
+!scripts/
+!scripts/**
 
 # Allow Zola project structure
 !source-code/
