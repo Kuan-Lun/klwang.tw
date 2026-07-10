@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(update-config)",
+      "Skill(update-config:*)",
+      "Bash(echo:*)",
+      "Bash(find:*)",
+      "Bash(mkdir -p *)"
+    ],
+    "additionalDirectories": [
+      "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "scripts/hooks/finalize-markdown.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
