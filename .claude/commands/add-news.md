@@ -9,34 +9,61 @@ URL to process: $1
 
 If no URL was given, ask the user for one and stop.
 
-## 1. Read the source article
+## 1. Archive it
 
-Use WebFetch on the URL to extract:
+Run:
+
+```bash
+scripts/archive-url.sh "$1"
+```
+
+If it fails, run it again once more (transient Save Page Now failures are common). If it **still** fails after that retry, stop here — do not create any file. Report back to the user that archiving failed, so they can retry later or supply a snapshot manually.
+
+On success, the script prints a `web.archive.org/web/...` URL — use it verbatim as `extra.link_to`, and keep it around, it's also your primary source for step 2.
+
+## 2. Read the source article
+
+Try WebFetch on the *original* URL ($1) first, to extract:
 
 - Headline (`title`)
 - Byline author name(s) (`authors`) — omit the field entirely if the article has no visible byline
 - Publish date in `YYYY-MM-DD` (`date`) — use the article's stated publish date, not today's date
 - Skim the body for anything genuinely noteworthy that a reader wouldn't get from the title alone (a specific statistic, an official's exact quote, a surprising cause). Only if such a detail exists, draft one sentence for `description`. Most articles in this repo have no `description` — don't force one.
 
-If WebFetch can't get real content (paywall, JS-rendered shell, blocked), say so and ask the user to paste the title/author/date instead of guessing.
+Many outlets (this repo has already hit `ftvnews.com.tw`) sit behind a Cloudflare bot-challenge and WebFetch will come back with a 403 or a "Just a moment..." shell instead of the article. When that happens, **don't reach for FlareSolverr yet** — read the archive.org snapshot from step 1 instead, which is a plain static page and almost always bypasses the challenge that blocked the live site:
 
-## 2. Archive it
-
-Run:
-
-```
-scripts/archive-url.sh "$1"
+```bash
+curl -sS -m 30 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "<the link_to URL from step 1>"
 ```
 
-If it fails, run it again once more (transient Save Page Now failures are common). If it **still** fails after that retry, stop here — do not create any file. Report back to the user: the title/author/date you already extracted, and that archiving failed, so they can retry later or supply a snapshot manually.
+Note: WebFetch itself refuses `web.archive.org` URLs outright, so this has to be a plain `curl`, not WebFetch. Parse the result yourself (there's no AI-summarization step doing it for you here):
 
-On success, the script prints a `web.archive.org/web/...` URL — use it verbatim as `extra.link_to`.
+- Title: the `<title>`/`<h1>` text, or `og:title` meta (strip any trailing `- 站名` suffix)
+- Date: `article:published_time` meta, or visible text like `發佈時間：YYYY/MM/DD`
+- Byline: look for a `記者OOO／地區報導`-style line near the top of the article body — the reporter's name, not the outlet's corporate name
+- A noteworthy detail for `description`, same bar as above
+
+Only if the archived snapshot *also* has no real content (rare — e.g. archive.org itself failed to capture a working page) fall back to FlareSolverr, a local headless-browser proxy, against the **original** URL:
+
+```bash
+scripts/flaresolverr.sh fetch "$1"
+```
+
+This starts the FlareSolverr container on demand (first call may take ~10-30s to boot) and prints the rendered HTML to stdout. Once you're done fetching (whether or not FlareSolverr was needed), run:
+
+```bash
+scripts/flaresolverr.sh stop
+```
+
+to remove the container again — it's meant to be ephemeral, not left running between commands.
+
+If FlareSolverr *also* fails to get real content, say so and ask the user to paste the title/author/date instead of guessing.
 
 ## 3. Derive the slug
 
 Check existing slugs for the same domain first, to reuse the established shorthand for that outlet:
 
-```
+```bash
 grep -rh '^slug' source-code/content/news --include="*.md"
 ```
 
@@ -55,7 +82,7 @@ Examples already in the repo: `ftvnews-2026502S07M1`, `tvbs-3230434`, `udn-7317-
 
 Current category folders:
 
-```
+```bash
 ls source-code/content/news
 ```
 
@@ -88,10 +115,10 @@ Use full-width punctuation only (`／`, `「」`, `？`, `！`); never put an AS
 
 Match the exact TOML shape used throughout the repo — check 1-2 existing files in the destination folder to mirror field order exactly:
 
-```
+```toml
 +++
 title = "..."
-description = "..."   # only if you decided to add one in step 1
+description = "..."   # only if you decided to add one in step 2
 slug = "..."
 date = "YYYY-MM-DD"
 

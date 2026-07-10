@@ -35,7 +35,14 @@ fi
 echo "Save request did not return a snapshot directly; checking availability..." >&2
 
 available=$(curl -sS -m 20 "https://archive.org/wayback/available?url=${url}")
-snapshot=$(printf '%s' "$available" | grep -o '"url": *"[^"]*"' | head -1 | sed -E 's/.*"url": *"([^"]*)"/\1/')
+snapshot=$(printf '%s' "$available" | python3 -c '
+import json, sys
+try:
+    data = json.load(sys.stdin)
+    print(data["archived_snapshots"]["closest"]["url"])
+except (json.JSONDecodeError, KeyError):
+    pass
+')
 
 if [ -n "$snapshot" ]; then
     echo "$snapshot"
