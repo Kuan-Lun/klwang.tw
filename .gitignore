@@ -11,6 +11,10 @@
 !scripts/
 !scripts/**
 
+# Allow Claude project structure
+!.claude/
+!.claude/**
+
 # Allow Zola project structure
 !source-code/
 !source-code/content/
