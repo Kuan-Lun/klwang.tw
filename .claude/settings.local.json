@@ -1,11 +1,21 @@
 {
+  "env": {
+    "FLARESOLVERR_URL": "http://localhost:8191/v1"
+  },
   "permissions": {
     "allow": [
       "Skill(update-config)",
       "Skill(update-config:*)",
       "Bash(echo:*)",
       "Bash(find:*)",
-      "Bash(mkdir -p *)"
+      "Bash(mkdir -p *)",
+      "Bash(git check-ignore *)",
+      "Bash(python3 -c *)",
+      "Bash(scripts/archive-url.sh *)",
+      "Bash(scripts/flaresolverr.sh *)",
+      "Bash(curl -sS -m 30 -A \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36\" *)",
+      "WebFetch(domain:www.ftvnews.com.tw)",
+      "WebFetch(domain:news.pts.org.tw)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
