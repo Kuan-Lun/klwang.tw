@@ -36,7 +36,8 @@
       "Bash(echo \"exit: $?\")",
       "Bash(zola check *)",
       "Bash(docker run *)",
-      "Bash(docker pull *)"
+      "Bash(docker pull *)",
+      "Bash(xargs -I{} echo {})"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
