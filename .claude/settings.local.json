@@ -45,7 +45,8 @@
       "WebFetch(domain:www.ctee.com.tw)",
       "WebFetch(domain:money.udn.com)",
       "Read(//private/tmp/**)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(git commit *)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
