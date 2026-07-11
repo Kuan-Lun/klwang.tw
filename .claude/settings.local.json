@@ -12,8 +12,6 @@
       "Bash(python3 -c *)",
       "Bash(scripts/archive-url.sh *)",
       "Bash(scripts/flaresolverr.sh *)",
-      "Skill(update-config)",
-      "Skill(update-config:*)",
       "WebFetch(domain:news.pts.org.tw)",
       "WebFetch(domain:www.ftvnews.com.tw)",
       "WebFetch(domain:www.storm.mg)",
@@ -25,7 +23,10 @@
       "WebFetch(domain:www.ettoday.net)",
       "WebFetch(domain:www.knews.com.tw)",
       "WebFetch(domain:www.setn.com)",
-      "WebFetch(domain:www.mirrormedia.mg)"
+      "WebFetch(domain:www.mirrormedia.mg)",
+      "Skill(update-config)",
+      "Skill(update-config:*)",
+      "WebFetch(domain:www.ctwant.com)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
