@@ -24,7 +24,8 @@
       "WebFetch(domain:news.cts.com.tw)",
       "WebFetch(domain:www.ettoday.net)",
       "WebFetch(domain:www.knews.com.tw)",
-      "WebFetch(domain:www.setn.com)"
+      "WebFetch(domain:www.setn.com)",
+      "WebFetch(domain:www.mirrormedia.mg)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
