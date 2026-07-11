@@ -39,3 +39,7 @@ Thumbs.db
 
 # Ignore macOS system files
 .DS_Store
+
+# Ignore Codex project structure
+!.Codex/
+!.Codex/**
