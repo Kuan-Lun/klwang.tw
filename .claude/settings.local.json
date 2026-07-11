@@ -53,7 +53,8 @@
       "WebFetch(domain:www.nownews.com)",
       "WebFetch(domain:www.i-cable.com)",
       "WebFetch(domain:news.ebc.net.tw)",
-      "WebFetch(domain:www.twreporter.org)"
+      "WebFetch(domain:www.twreporter.org)",
+      "WebFetch(domain:tech.udn.com)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
