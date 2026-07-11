@@ -30,7 +30,8 @@
       "WebFetch(domain:news.tvbs.com.tw)",
       "WebFetch(domain:www.ithome.com.tw)",
       "Bash(python3 -c ' *)",
-      "WebFetch(domain:news.ltn.com.tw)"
+      "WebFetch(domain:news.ltn.com.tw)",
+      "WebFetch(domain:news.nextapple.com)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
