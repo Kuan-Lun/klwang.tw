@@ -23,7 +23,8 @@
       "WebFetch(domain:finance.ettoday.net)",
       "WebFetch(domain:news.cts.com.tw)",
       "WebFetch(domain:www.ettoday.net)",
-      "WebFetch(domain:www.knews.com.tw)"
+      "WebFetch(domain:www.knews.com.tw)",
+      "WebFetch(domain:www.setn.com)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
