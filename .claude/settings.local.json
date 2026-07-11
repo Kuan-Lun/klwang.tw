@@ -20,7 +20,8 @@
       "WebFetch(domain:udn.com)",
       "WebFetch(domain:www.chinatimes.com)",
       "WebFetch(domain:www.gvm.com.tw)",
-      "WebFetch(domain:finance.ettoday.net)"
+      "WebFetch(domain:finance.ettoday.net)",
+      "WebFetch(domain:news.cts.com.tw)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
