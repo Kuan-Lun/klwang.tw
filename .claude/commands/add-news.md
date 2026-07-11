@@ -26,7 +26,6 @@ On success, the script prints a `web.archive.org/web/...` URL — use it verbati
 Try WebFetch on the *original* URL ($1) first, to extract:
 
 - Headline (`title`)
-- Byline author name(s) (`authors`) — omit the field entirely if the article has no visible byline
 - Publish date in `YYYY-MM-DD` (`date`) — use the article's stated publish date, not today's date
 - Skim the body for anything genuinely noteworthy that a reader wouldn't get from the title alone (a specific statistic, an official's exact quote, a surprising cause). Only if such a detail exists, draft one sentence for `description`. Most articles in this repo have no `description` — don't force one.
 
@@ -40,7 +39,6 @@ Note: WebFetch itself refuses `web.archive.org` URLs outright, so this has to be
 
 - Title: the `<title>`/`<h1>` text, or `og:title` meta (strip any trailing `- 站名` suffix)
 - Date: `article:published_time` meta, or visible text like `發佈時間：YYYY/MM/DD`
-- Byline: look for a `記者OOO／地區報導`-style line near the top of the article body — the reporter's name, not the outlet's corporate name
 - A noteworthy detail for `description`, same bar as above
 
 Only if the archived snapshot *also* has no real content (rare — e.g. archive.org itself failed to capture a working page) fall back to FlareSolverr, a local headless-browser proxy, against the **original** URL:
@@ -57,7 +55,7 @@ scripts/flaresolverr.sh stop
 
 to remove the container again — it's meant to be ephemeral, not left running between commands.
 
-If FlareSolverr *also* fails to get real content, say so and ask the user to paste the title/author/date instead of guessing.
+If FlareSolverr *also* fails to get real content, say so and ask the user to paste the title/date instead of guessing.
 
 ## 3. Derive the slug
 
@@ -88,7 +86,7 @@ Current category folders:
 ls source-code/content/news
 ```
 
-(As of this writing: `交通安全`, `勞權`, `國軍`, `社會`, `移工`, `偷拍`, `詐騙`, `警察`, `電力`, `食安` — but re-check, since folders get added over time.)
+This always reflects the live set — folders get added over time, so don't rely on any list written down here or elsewhere; re-run it fresh each time.
 
 Judge the single most fitting topical tag primarily from the **title** (skim the body only to double-check, per this repo's convention). If that tag matches one of the existing folder names exactly, put it first in `news_tags` and place the file inside `source-code/content/news/<folder>/`. If it doesn't match any folder, put the file directly in `source-code/content/news/` and pick whatever tag(s) best describe it — look at tags already used at the top level for style (e.g. `["抽獎"]`, `["廣告"]`, `["韓國", "國際"]`). Don't invent a new folder yourself; that's a judgment call for `/review-news-taxonomy`.
 
@@ -131,7 +129,6 @@ link_to = "https://web.archive.org/web/..."
 
 [taxonomies]
 news_tags = ["..."]
-authors = ["..."]     # only if a byline exists
 +++
 ```
 
