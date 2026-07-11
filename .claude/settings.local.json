@@ -32,7 +32,8 @@
       "Bash(python3 -c ' *)",
       "WebFetch(domain:news.ltn.com.tw)",
       "WebFetch(domain:news.nextapple.com)",
-      "Bash(git diff *)"
+      "Bash(git diff *)",
+      "Bash(echo \"exit: $?\")"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
