@@ -9,6 +9,8 @@ URL to process: $1
 
 If no URL was given, ask the user for one and stop.
 
+**Parallelize where possible:** step 1 (archive), the initial WebFetch in step 2, and the repo lookups in steps 3-4 (`grep` for existing slugs/tags, `ls` the category folders) don't depend on each other — fire them off together in one batch instead of one at a time. The only thing that must wait on step 1 is step 2's *fallback* path (the `curl` against the archive.org snapshot), which needs the archived URL step 1 prints.
+
 ## 1. Archive it
 
 Run:
