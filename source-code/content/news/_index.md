@@ -1,5 +1,5 @@
 +++
-paginate_by = 10
+paginate_by = 30
 title = "News"
 sort_by = "date"
 
