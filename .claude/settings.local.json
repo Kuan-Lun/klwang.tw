@@ -49,7 +49,11 @@
       "Bash(git commit *)",
       "WebFetch(domain:news.videoland.com.tw)",
       "WebFetch(domain:zh.shenjumiaosuan.com)",
-      "WebFetch(domain:www.taisounds.com)"
+      "WebFetch(domain:www.taisounds.com)",
+      "WebFetch(domain:www.nownews.com)",
+      "WebFetch(domain:www.i-cable.com)",
+      "WebFetch(domain:news.ebc.net.tw)",
+      "WebFetch(domain:www.twreporter.org)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
