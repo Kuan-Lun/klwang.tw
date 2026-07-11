@@ -4,6 +4,7 @@ theme = "apollo"
 taxonomies = [
     { name = "tags" },
     { name = "authors"},
+    { name = "news_tags" },
 ]
 
 # The URL the site will be built for
