@@ -28,7 +28,9 @@
       "Skill(update-config:*)",
       "WebFetch(domain:www.ctwant.com)",
       "WebFetch(domain:news.tvbs.com.tw)",
-      "WebFetch(domain:www.ithome.com.tw)"
+      "WebFetch(domain:www.ithome.com.tw)",
+      "Bash(python3 -c ' *)",
+      "WebFetch(domain:news.ltn.com.tw)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
