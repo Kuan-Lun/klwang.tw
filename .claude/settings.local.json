@@ -33,7 +33,10 @@
       "WebFetch(domain:news.ltn.com.tw)",
       "WebFetch(domain:news.nextapple.com)",
       "Bash(git diff *)",
-      "Bash(echo \"exit: $?\")"
+      "Bash(echo \"exit: $?\")",
+      "Bash(zola check *)",
+      "Bash(docker run *)",
+      "Bash(docker pull *)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
