@@ -67,6 +67,8 @@ Check existing slugs for the same domain first, to reuse the established shortha
 grep -rh '^slug' source-code/content/news --include="*.md"
 ```
 
+(Existing tags can be surveyed the same way with `grep -rh '^news_tags' source-code/content/news --include="*.md"`.)
+
 Known shorthands already in use: `udn`, `tvbs`, `setn`, `ettoday`, `chinatimes`, `ltn`, `ftvnews`, `pts`, `mydrivers`, `ctee`. If the outlet hasn't appeared before, derive a short lowercase code from the domain (strip `www.`/`news.`/`m.` and the TLD, e.g. `apnews.com` → `apnews`).
 
 Build the rest of the slug as `<shortcode>-<ids>`, where `<ids>` are the numeric/alphanumeric identifier segments from the URL's path or query string, joined by `-`, in order:
@@ -88,9 +90,11 @@ ls source-code/content/news
 
 (As of this writing: `交通安全`, `勞權`, `國軍`, `社會`, `移工`, `偷拍`, `詐騙`, `警察`, `電力`, `食安` — but re-check, since folders get added over time.)
 
-Judge the single most fitting topical tag primarily from the **title** (skim the body only to double-check, per this repo's convention). If that tag matches one of the existing folder names exactly, put it first in `tags` and place the file inside `source-code/content/news/<folder>/`. If it doesn't match any folder, put the file directly in `source-code/content/news/` and pick whatever tag(s) best describe it — look at tags already used at the top level for style (e.g. `["抽獎"]`, `["廣告"]`, `["韓國", "國際"]`). Don't invent a new folder yourself; that's a judgment call for `/review-news-taxonomy`.
+Judge the single most fitting topical tag primarily from the **title** (skim the body only to double-check, per this repo's convention). If that tag matches one of the existing folder names exactly, put it first in `news_tags` and place the file inside `source-code/content/news/<folder>/`. If it doesn't match any folder, put the file directly in `source-code/content/news/` and pick whatever tag(s) best describe it — look at tags already used at the top level for style (e.g. `["抽獎"]`, `["廣告"]`, `["韓國", "國際"]`). Don't invent a new folder yourself; that's a judgment call for `/review-news-taxonomy`.
 
 A second tag is fine when the article clearly has more than one angle (e.g. `["移工", "失聯移工"]`), but keep it to 1-2 tags total, matching existing style.
+
+Note: news articles use their own `news_tags` taxonomy, kept separate from the site-wide `tags` taxonomy used by `posts`/`adapted` content — don't use the `tags` field here.
 
 ## 5. Filename
 
@@ -126,7 +130,7 @@ date = "YYYY-MM-DD"
 link_to = "https://web.archive.org/web/..."
 
 [taxonomies]
-tags = ["..."]
+news_tags = ["..."]
 authors = ["..."]     # only if a byline exists
 +++
 ```
