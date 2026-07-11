@@ -86,7 +86,7 @@ Current category folders:
 ls source-code/content/news
 ```
 
-(As of this writing: `交通安全`, `勞權`, `國軍`, `社會`, `移工`, `警察`, `電力`, `食安` — but re-check, since folders get added over time.)
+(As of this writing: `交通安全`, `勞權`, `國軍`, `社會`, `移工`, `偷拍`, `詐騙`, `警察`, `電力`, `食安` — but re-check, since folders get added over time.)
 
 Judge the single most fitting topical tag primarily from the **title** (skim the body only to double-check, per this repo's convention). If that tag matches one of the existing folder names exactly, put it first in `tags` and place the file inside `source-code/content/news/<folder>/`. If it doesn't match any folder, put the file directly in `source-code/content/news/` and pick whatever tag(s) best describe it — look at tags already used at the top level for style (e.g. `["抽獎"]`, `["廣告"]`, `["韓國", "國際"]`). Don't invent a new folder yourself; that's a judgment call for `/review-news-taxonomy`.
 
