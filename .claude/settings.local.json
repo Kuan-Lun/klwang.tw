@@ -19,7 +19,8 @@
       "WebFetch(domain:www.storm.mg)",
       "WebFetch(domain:udn.com)",
       "WebFetch(domain:www.chinatimes.com)",
-      "WebFetch(domain:www.gvm.com.tw)"
+      "WebFetch(domain:www.gvm.com.tw)",
+      "WebFetch(domain:finance.ettoday.net)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
