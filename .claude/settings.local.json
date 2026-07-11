@@ -26,7 +26,8 @@
       "WebFetch(domain:www.mirrormedia.mg)",
       "Skill(update-config)",
       "Skill(update-config:*)",
-      "WebFetch(domain:www.ctwant.com)"
+      "WebFetch(domain:www.ctwant.com)",
+      "WebFetch(domain:news.tvbs.com.tw)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
