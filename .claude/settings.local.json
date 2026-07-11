@@ -48,7 +48,8 @@
       "Read(//tmp/**)",
       "Bash(git commit *)",
       "WebFetch(domain:news.videoland.com.tw)",
-      "WebFetch(domain:zh.shenjumiaosuan.com)"
+      "WebFetch(domain:zh.shenjumiaosuan.com)",
+      "WebFetch(domain:www.taisounds.com)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
