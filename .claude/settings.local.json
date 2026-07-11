@@ -31,7 +31,8 @@
       "WebFetch(domain:www.ithome.com.tw)",
       "Bash(python3 -c ' *)",
       "WebFetch(domain:news.ltn.com.tw)",
-      "WebFetch(domain:news.nextapple.com)"
+      "WebFetch(domain:news.nextapple.com)",
+      "Bash(git diff *)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
