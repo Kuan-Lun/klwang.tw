@@ -46,7 +46,8 @@
       "WebFetch(domain:money.udn.com)",
       "Read(//private/tmp/**)",
       "Read(//tmp/**)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "WebFetch(domain:news.videoland.com.tw)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
