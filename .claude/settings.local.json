@@ -37,7 +37,15 @@
       "Bash(zola check *)",
       "Bash(docker run *)",
       "Bash(docker pull *)",
-      "Bash(xargs -I{} echo {})"
+      "Bash(xargs -I{} echo {})",
+      "WebFetch(domain:www.mnews.tw)",
+      "WebFetch(domain:health.ltn.com.tw)",
+      "WebFetch(domain:www.cna.com.tw)",
+      "WebFetch(domain:ec.ltn.com.tw)",
+      "WebFetch(domain:www.ctee.com.tw)",
+      "WebFetch(domain:money.udn.com)",
+      "Read(//private/tmp/**)",
+      "Read(//tmp/**)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
