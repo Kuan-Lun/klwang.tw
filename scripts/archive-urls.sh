@@ -20,7 +20,16 @@ if [ $# -lt 1 ]; then
     exit 1
 fi
 
+first=1
 for url in "$@"; do
+    # Space out requests to Save Page Now so a burst of URLs doesn't
+    # trip its rate limiting and turn transient throttling into
+    # spurious FAILs.
+    if [ $first -eq 0 ]; then
+        sleep 2
+    fi
+    first=0
+
     archived=$("$SCRIPT_DIR/archive-url.sh" "$url" 2>/dev/null)
     if [ -z "$archived" ]; then
         echo "retrying archive for $url..." >&2
