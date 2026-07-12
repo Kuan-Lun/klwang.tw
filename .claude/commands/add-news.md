@@ -1,31 +1,34 @@
 ---
-description: Archive a news article URL and create the corresponding source-code/content/news markdown file following this repo's conventions.
-argument-hint: [url]
+description: Archive one or more news article URLs and create the corresponding source-code/content/news markdown files following this repo's conventions.
+argument-hint: [url...]
 ---
 
-Add one news article to `source-code/content/news/` from a source URL.
+Add one or more news articles to `source-code/content/news/` from source URLs.
 
-URL to process: $1
+URLs to process: $ARGUMENTS (space- or newline-separated; one URL works the same way as many)
 
-If no URL was given, ask the user for one and stop.
+If no URL was given, ask the user for at least one and stop.
 
-**Parallelize where possible:** step 1 (archive), the initial WebFetch in step 2, and the repo lookups in steps 3-4 (`scripts/news-context.sh`) don't depend on each other — fire them off together in one batch instead of one at a time. The only thing that must wait on step 1 is step 2's *fallback* path (`scripts/fetch-archived.sh`), which needs the archived URL step 1 prints.
+Process every URL through steps 1-6 independently. **One URL's failure must never stop the batch** — when a URL can't proceed past a given step, drop it into the matching bucket described in "Failure handling" below and move on to the next URL. Only ask the user something mid-run if it's a genuine batch-wide blocker (e.g. no URLs given at all); everything else waits for the "Final report" at the end.
 
-## 1. Archive it
+**Parallelize where possible:** step 1 (archive, batched), the initial WebFetch in step 2 for each URL, and the repo lookups in steps 3-4 (`scripts/news-context.sh`, run once for the whole batch) don't depend on each other — fire them off together instead of one at a time. The only thing that must wait on step 1 is step 2's *fallback* path (`scripts/fetch-archived.sh`) for a given URL, which needs that URL's archived link.
 
-Run:
+## 1. Archive everything
+
+Archive every URL in one call:
 
 ```bash
-scripts/archive-url.sh "$1"
+scripts/archive-urls.sh $ARGUMENTS
 ```
 
-If it fails, run it again once more (transient Save Page Now failures are common). If it **still** fails after that retry, stop here — do not create any file. Report back to the user that archiving failed, so they can retry later or supply a snapshot manually.
+This retries each URL once on failure and prints one line per URL:
 
-On success, the script prints a `web.archive.org/web/...` URL — use it verbatim as `extra.link_to`, and keep it around, it's also your primary source for step 2.
+- `OK <url> <archived-url>` — use `<archived-url>` verbatim as that article's `extra.link_to`, and keep it around, it's also the primary source for step 2.
+- `FAIL <url>` — Save Page Now failed twice for this URL. Drop it into the **archive-failed** bucket immediately and skip steps 2-6 for it entirely — there's no `link_to` to give it, so no file can be created.
 
 ## 2. Read the source article
 
-Try WebFetch on the *original* URL ($1) first, to extract:
+Try WebFetch on the *original* URL (the one being processed, not the archived one) first, to extract:
 
 - Headline (`title`)
 - Publish date in `YYYY-MM-DD` (`date`) — use the article's stated publish date, not today's date
@@ -46,7 +49,7 @@ Note: WebFetch itself refuses `web.archive.org` URLs outright, so this has to be
 Only if the archived snapshot *also* has no real content (rare — e.g. archive.org itself failed to capture a working page) fall back to FlareSolverr, a local headless-browser proxy, against the **original** URL:
 
 ```bash
-scripts/flaresolverr.sh fetch "$1"
+scripts/flaresolverr.sh fetch "<the original URL being processed>"
 ```
 
 This starts the FlareSolverr container on demand (first call may take ~10-30s to boot) and prints the rendered HTML to stdout. Once you're done fetching (whether or not FlareSolverr was needed), run:
@@ -57,11 +60,11 @@ scripts/flaresolverr.sh stop
 
 to remove the container again — it's meant to be ephemeral, not left running between commands.
 
-If FlareSolverr *also* fails to get real content, say so and ask the user to paste the title/date instead of guessing.
+If FlareSolverr *also* fails to get real content, this URL goes into the **content-unreadable** bucket: it already has a `link_to` from step 1, but nothing could be read to fill in `title`/`date`. Don't guess — don't ask the user right now either, since that would block the rest of the batch. Note the URL and its `link_to`, skip steps 3-6 for it, and move on; these get asked about together in the "Final report" at the end.
 
 ## 3. Derive the slug
 
-Check existing slugs for the same domain first, to reuse the established shorthand for that outlet — `scripts/news-context.sh` prints these along with the existing tags and category folders (see step 4) in one call:
+Check existing slugs for the same domain first, to reuse the established shorthand for that outlet — `scripts/news-context.sh` prints these along with the existing tags and category folders (see step 4) in one call. Run it **once for the whole batch**, not per URL — but keep a running mental list of slugs/filenames you've already assigned earlier in *this* run (including for other URLs in the same batch) and treat those as taken too, since the script only sees what's already on disk:
 
 ```bash
 scripts/news-context.sh
@@ -122,6 +125,28 @@ scripts/write-news.sh \
     "source-code/content/news/<folder-or-nothing>/<filename>.md"
 ```
 
-Omit `--description` if you decided not to add one in step 2. The script refuses to overwrite an existing file, and leaves the body empty — this repo doesn't reproduce article text, the frontmatter is the whole file.
+Omit `--description` if you decided not to add one in step 2. The script leaves the body empty — this repo doesn't reproduce article text, the frontmatter is the whole file.
 
-Finally, show the user the file you created and its path so they can review before committing. Don't commit it yourself.
+The script also refuses to overwrite an existing file — if that happens here, it means the slug/filename you derived in steps 3/5 collides with something already on disk (possibly another URL from *this same batch*, see step 3's note). Don't force an overwrite: pick a distinguishing tweak (an extra ID segment for the slug, a more specific filename phrase) and retry the write. If it's not obviously resolvable, drop this URL into the **write-failed** bucket instead of guessing further.
+
+## Failure handling
+
+Every URL ends up in exactly one bucket:
+
+- **created** — file written successfully.
+- **archive-failed** (step 1) — Save Page Now failed twice; no `link_to` exists, so nothing else was attempted.
+- **content-unreadable** (step 2) — archived fine, but no source (original, archive.org snapshot, FlareSolverr) yielded readable content for `title`/`date`.
+- **write-failed** (step 6) — a slug/filename collision that couldn't be resolved automatically.
+
+None of these should ever raise an error that stops the batch — they're just categories for the final report.
+
+## Final report
+
+After every URL has been processed, report a summary back to the user, grouped by bucket:
+
+- **Created** — list each file's path, so the user can review before committing (don't commit it yourself).
+- **Archive failed** — list the URLs; suggest retrying later or supplying a manual snapshot.
+- **Content unreadable** — list the URLs *with* their captured `link_to` (it's already archived, so it isn't wasted work). Ask the user, in one batched question, to supply title/date (and description/tags if they want) for these; once given, write them with `scripts/write-news.sh` same as any other article.
+- **Write failed** — list the URLs and what collided, so the user can decide how to disambiguate.
+
+Omit any bucket that's empty rather than listing it as "none".
