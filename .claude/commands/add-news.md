@@ -9,7 +9,7 @@ URL to process: $1
 
 If no URL was given, ask the user for one and stop.
 
-**Parallelize where possible:** step 1 (archive), the initial WebFetch in step 2, and the repo lookups in steps 3-4 (`grep` for existing slugs/tags, `ls` the category folders) don't depend on each other — fire them off together in one batch instead of one at a time. The only thing that must wait on step 1 is step 2's *fallback* path (the `curl` against the archive.org snapshot), which needs the archived URL step 1 prints.
+**Parallelize where possible:** step 1 (archive), the initial WebFetch in step 2, and the repo lookups in steps 3-4 (`scripts/news-context.sh`) don't depend on each other — fire them off together in one batch instead of one at a time. The only thing that must wait on step 1 is step 2's *fallback* path (`scripts/fetch-archived.sh`), which needs the archived URL step 1 prints.
 
 ## 1. Archive it
 
@@ -34,10 +34,10 @@ Try WebFetch on the *original* URL ($1) first, to extract:
 Many outlets (this repo has already hit `ftvnews.com.tw`) sit behind a Cloudflare bot-challenge and WebFetch will come back with a 403 or a "Just a moment..." shell instead of the article. When that happens, **don't reach for FlareSolverr yet** — read the archive.org snapshot from step 1 instead, which is a plain static page and almost always bypasses the challenge that blocked the live site:
 
 ```bash
-curl -sS -m 30 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "<the link_to URL from step 1>"
+scripts/fetch-archived.sh "<the link_to URL from step 1>"
 ```
 
-Note: WebFetch itself refuses `web.archive.org` URLs outright, so this has to be a plain `curl`, not WebFetch. Parse the result yourself (there's no AI-summarization step doing it for you here):
+Note: WebFetch itself refuses `web.archive.org` URLs outright, so this has to be a plain `curl` under the hood, not WebFetch. Parse the result yourself (there's no AI-summarization step doing it for you here):
 
 - Title: the `<title>`/`<h1>` text, or `og:title` meta (strip any trailing `- 站名` suffix)
 - Date: `article:published_time` meta, or visible text like `發佈時間：YYYY/MM/DD`
@@ -61,13 +61,11 @@ If FlareSolverr *also* fails to get real content, say so and ask the user to pas
 
 ## 3. Derive the slug
 
-Check existing slugs for the same domain first, to reuse the established shorthand for that outlet:
+Check existing slugs for the same domain first, to reuse the established shorthand for that outlet — `scripts/news-context.sh` prints these along with the existing tags and category folders (see step 4) in one call:
 
 ```bash
-grep -rh '^slug' source-code/content/news --include="*.md"
+scripts/news-context.sh
 ```
-
-(Existing tags can be surveyed the same way with `grep -rh '^news_tags' source-code/content/news --include="*.md"`.)
 
 Known shorthands already in use: `udn`, `tvbs`, `setn`, `ettoday`, `chinatimes`, `ltn`, `ftvnews`, `pts`, `mydrivers`, `ctee`. If the outlet hasn't appeared before, derive a short lowercase code from the domain (strip `www.`/`news.`/`m.` and the TLD, e.g. `apnews.com` → `apnews`).
 
@@ -82,13 +80,7 @@ Examples already in the repo: `ftvnews-2026502S07M1`, `tvbs-3230434`, `udn-7317-
 
 ## 4. Pick tags and a home folder
 
-Current category folders:
-
-```bash
-ls source-code/content/news
-```
-
-This always reflects the live set — folders get added over time, so don't rely on any list written down here or elsewhere; re-run it fresh each time.
+Current category folders are the third section printed by `scripts/news-context.sh` (see step 3) — this always reflects the live set, so don't rely on any list written down here or elsewhere; re-run it fresh each time.
 
 Judge the single most fitting topical tag primarily from the **title** (skim the body only to double-check, per this repo's convention). If that tag matches one of the existing folder names exactly, put it first in `news_tags` and place the file inside `source-code/content/news/<folder>/`. If it doesn't match any folder, put the file directly in `source-code/content/news/` and pick whatever tag(s) best describe it — look at tags already used at the top level for style (e.g. `["抽獎"]`, `["廣告"]`, `["韓國", "國際"]`). Don't invent a new folder yourself; that's a judgment call for `/review-news-taxonomy`.
 
@@ -117,23 +109,19 @@ Use full-width punctuation only (`／`, `「」`, `？`, `！`); never put an AS
 
 ## 6. Write the file
 
-Match the exact TOML shape used throughout the repo — check 1-2 existing files in the destination folder to mirror field order exactly:
+Use `scripts/write-news.sh` — it produces the exact TOML shape used throughout the repo (field order, quoting/escaping) so you don't have to hand-format it:
 
-```toml
-+++
-title = "..."
-description = "..."   # only if you decided to add one in step 2
-slug = "..."
-date = "YYYY-MM-DD"
-
-[extra]
-link_to = "https://web.archive.org/web/..."
-
-[taxonomies]
-news_tags = ["..."]
-+++
+```bash
+scripts/write-news.sh \
+    --title "..." \
+    --description "..." \
+    --slug "..." \
+    --date "YYYY-MM-DD" \
+    --link-to "https://web.archive.org/web/..." \
+    --tags "tag1,tag2" \
+    "source-code/content/news/<folder-or-nothing>/<filename>.md"
 ```
 
-Leave the body empty — this repo doesn't reproduce article text, the frontmatter is the whole file.
+Omit `--description` if you decided not to add one in step 2. The script refuses to overwrite an existing file, and leaves the body empty — this repo doesn't reproduce article text, the frontmatter is the whole file.
 
 Finally, show the user the file you created and its path so they can review before committing. Don't commit it yourself.
