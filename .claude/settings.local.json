@@ -58,7 +58,8 @@
       "WebFetch(domain:www.mirrordaily.news)",
       "WebFetch(domain:www.thenewslens.com)",
       "WebFetch(domain:star.ettoday.net)",
-      "WebFetch(domain:news.cnyes.com)"
+      "WebFetch(domain:news.cnyes.com)",
+      "WebFetch(domain:www.worldjournal.com)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
