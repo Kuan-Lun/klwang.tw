@@ -60,7 +60,8 @@
       "WebFetch(domain:star.ettoday.net)",
       "WebFetch(domain:news.cnyes.com)",
       "WebFetch(domain:www.worldjournal.com)",
-      "WebFetch(domain:house.ettoday.net)"
+      "WebFetch(domain:house.ettoday.net)",
+      "WebFetch(domain:www.wealth.com.tw)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
