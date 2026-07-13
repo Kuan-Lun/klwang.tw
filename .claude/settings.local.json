@@ -66,7 +66,11 @@
       "Bash(scripts/news-context.sh)",
       "WebFetch(domain:autos.udn.com)",
       "WebFetch(domain:pets.ettoday.net)",
-      "WebFetch(domain:www.toy-people.com)"
+      "WebFetch(domain:www.toy-people.com)",
+      "WebFetch(domain:www.techbang.com)",
+      "WebFetch(domain:cars.tvbs.com.tw)",
+      "WebFetch(domain:www.bbc.com)",
+      "WebFetch(domain:travel.udn.com)"
     ]
   },
   "hooks": {
