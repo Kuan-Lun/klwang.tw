@@ -46,3 +46,6 @@ Thumbs.db
 # Ignore Codex project structure
 !.Codex/
 !.Codex/**
+
+# Ignore Codex project files
+source-code/content/news/toadd-news.txt
