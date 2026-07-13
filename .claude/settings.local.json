@@ -61,7 +61,8 @@
       "WebFetch(domain:news.cnyes.com)",
       "WebFetch(domain:www.worldjournal.com)",
       "WebFetch(domain:house.ettoday.net)",
-      "WebFetch(domain:www.wealth.com.tw)"
+      "WebFetch(domain:www.wealth.com.tw)",
+      "Bash(scripts/archive-urls.sh)"
     ],
     "additionalDirectories": [
       "/Users/kuanlun_wang/Desktop/git-repo/klwang.tw.clone/.claude"
