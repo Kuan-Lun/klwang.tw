@@ -63,7 +63,10 @@
       "WebFetch(domain:house.ettoday.net)",
       "WebFetch(domain:www.wealth.com.tw)",
       "Bash(scripts/archive-urls.sh)",
-      "Bash(scripts/news-context.sh)"
+      "Bash(scripts/news-context.sh)",
+      "WebFetch(domain:autos.udn.com)",
+      "WebFetch(domain:pets.ettoday.net)",
+      "WebFetch(domain:www.toy-people.com)"
     ]
   },
   "hooks": {
