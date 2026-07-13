@@ -70,7 +70,8 @@
       "WebFetch(domain:www.techbang.com)",
       "WebFetch(domain:cars.tvbs.com.tw)",
       "WebFetch(domain:www.bbc.com)",
-      "WebFetch(domain:travel.udn.com)"
+      "WebFetch(domain:travel.udn.com)",
+      "WebFetch(domain:unwire.hk)"
     ]
   },
   "hooks": {
