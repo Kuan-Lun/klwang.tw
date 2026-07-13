@@ -5,26 +5,31 @@ argument-hint: [url...]
 
 Add one or more news articles to `source-code/content/news/` from source URLs.
 
-URLs to process: $ARGUMENTS (space- or newline-separated; one URL works the same way as many)
-
-If no URL was given, ask the user for at least one and stop.
-
-Process every URL through steps 1-6 independently. **One URL's failure must never stop the batch** — when a URL can't proceed past a given step, drop it into the matching bucket described in "Failure handling" below and move on to the next URL. Only ask the user something mid-run if it's a genuine batch-wide blocker (e.g. no URLs given at all); everything else waits for the "Final report" at the end.
-
-**Parallelize where possible:** step 1 (archive, batched), the initial WebFetch in step 2 for each URL, and the repo lookups in steps 3-4 (`scripts/news-context.sh`, run once for the whole batch) don't depend on each other — fire them off together instead of one at a time. The only thing that must wait on step 1 is step 2's *fallback* path (`scripts/fetch-archived.sh`) for a given URL, which needs that URL's archived link.
+`source-code/content/news/toadd-news.txt` is the queue: one URL per line, blank lines ignored. It's the single source of truth for what this command processes — the batch worked on this run is whatever ends up in the queue, not just `$ARGUMENTS`.
 
 ## 1. Archive everything
-
-Archive every URL in one call:
 
 ```bash
 scripts/archive-urls.sh $ARGUMENTS
 ```
 
-This retries each URL once on failure and prints one line per URL:
+This does three things in one call, for the full batch:
+
+1. Queues any URLs passed in `$ARGUMENTS` (creating the queue file if needed, skipping ones already queued) — `$ARGUMENTS` can be empty, which just processes whatever's already sitting in the queue from an earlier run.
+2. For every URL now in the queue, checks whether it's already been turned into an article in an earlier run (a substring match against existing `link_to` fields — an archived link embeds the original URL as a trailing substring, so no need to re-archive to compare).
+3. Archives everything that isn't a duplicate, retrying each once on failure.
+
+Prints one line per queued URL:
 
 - `OK <url> <archived-url>` — use `<archived-url>` verbatim as that article's `extra.link_to`, and keep it around, it's also the primary source for step 2.
+- `DUP <url> <existing-file>` — already archived in `<existing-file>`. Drop it into the **already-archived** bucket, skip steps 2-6 for it entirely, and treat it as done for the `toadd-news.txt` cleanup in the final report.
 - `FAIL <url>` — Save Page Now failed twice for this URL. Drop it into the **archive-failed** bucket immediately and skip steps 2-6 for it entirely — there's no `link_to` to give it, so no file can be created.
+
+If this prints nothing at all (no `$ARGUMENTS` and nothing already queued), ask the user for at least one URL and stop.
+
+Process every URL through steps 1-6 independently. **One URL's failure must never stop the batch** — when a URL can't proceed past a given step, drop it into the matching bucket described in "Failure handling" below and move on to the next URL. Only ask the user something mid-run if it's a genuine batch-wide blocker (e.g. no URLs given at all); everything else waits for the "Final report" at the end.
+
+**Parallelize where possible:** the initial WebFetch in step 2 for each URL, and the repo lookups in steps 3-4 (`scripts/news-context.sh`, run once for the whole batch) don't depend on each other or on step 1 having fully finished for other URLs — fire them off together instead of one at a time. The only thing that must wait on step 1 is step 2's *fallback* path (`scripts/fetch-archived.sh`) for a given URL, which needs that URL's archived link.
 
 ## 2. Read the source article
 
@@ -34,10 +39,10 @@ Try WebFetch on the *original* URL (the one being processed, not the archived on
 - Publish date in `YYYY-MM-DD` (`date`) — use the article's stated publish date, not today's date
 - Skim the body for anything genuinely noteworthy that a reader wouldn't get from the title alone (a specific statistic, an official's exact quote, a surprising cause). Only if such a detail exists, draft one sentence for `description`. Most articles in this repo have no `description` — don't force one.
 
-Many outlets (this repo has already hit `ftvnews.com.tw`) sit behind a Cloudflare bot-challenge and WebFetch will come back with a 403 or a "Just a moment..." shell instead of the article. When that happens, **don't reach for FlareSolverr yet** — read the archive.org snapshot from step 1 instead, which is a plain static page and almost always bypasses the challenge that blocked the live site:
+Many outlets (this repo has already hit `ftvnews.com.tw`) sit behind a Cloudflare bot-challenge and WebFetch will come back with a 403 or a "Just a moment..." shell instead of the article. When that happens, **don't reach for FlareSolverr yet** — read the archive.org snapshot from step 2 instead, which is a plain static page and almost always bypasses the challenge that blocked the live site:
 
 ```bash
-scripts/fetch-archived.sh "<the link_to URL from step 1>"
+scripts/fetch-archived.sh "<the link_to URL from step 2>"
 ```
 
 Note: WebFetch itself refuses `web.archive.org` URLs outright, so this has to be a plain `curl` under the hood, not WebFetch. Parse the result yourself (there's no AI-summarization step doing it for you here):
@@ -134,6 +139,7 @@ The script also refuses to overwrite an existing file — if that happens here, 
 Every URL ends up in exactly one bucket:
 
 - **created** — file written successfully.
+- **already-archived** (step 1) — a matching `link_to` already exists in another file; nothing else was attempted.
 - **archive-failed** (step 1) — Save Page Now failed twice; no `link_to` exists, so nothing else was attempted.
 - **content-unreadable** (step 2) — archived fine, but no source (original, archive.org snapshot, FlareSolverr) yielded readable content for `title`/`date`.
 - **write-failed** (step 6) — a slug/filename collision that couldn't be resolved automatically.
@@ -145,8 +151,16 @@ None of these should ever raise an error that stops the batch — they're just c
 After every URL has been processed, report a summary back to the user, grouped by bucket:
 
 - **Created** — list each file's path, so the user can review before committing (don't commit it yourself).
+- **Already archived** — list the URLs and the existing file each one matched, in case the user wants to double-check it's really the same story.
 - **Archive failed** — list the URLs; suggest retrying later or supplying a manual snapshot.
 - **Content unreadable** — list the URLs *with* their captured `link_to` (it's already archived, so it isn't wasted work). Ask the user, in one batched question, to supply title/date (and description/tags if they want) for these; once given, write them with `scripts/write-news.sh` same as any other article.
 - **Write failed** — list the URLs and what collided, so the user can decide how to disambiguate.
 
 Omit any bucket that's empty rather than listing it as "none".
+
+## Update the queue file
+
+Rewrite `source-code/content/news/toadd-news.txt` at the end to reflect what happened:
+
+- Remove the URLs that ended up **created** or **already-archived** — nothing more to do for them.
+- Keep the URLs that ended up **archive-failed**, **content-unreadable**, or **write-failed** — they still need a retry or user input next time.
