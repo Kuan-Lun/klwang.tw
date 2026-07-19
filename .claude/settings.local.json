@@ -71,7 +71,9 @@
       "WebFetch(domain:cars.tvbs.com.tw)",
       "WebFetch(domain:www.bbc.com)",
       "WebFetch(domain:travel.udn.com)",
-      "WebFetch(domain:unwire.hk)"
+      "WebFetch(domain:unwire.hk)",
+      "WebFetch(domain:house.udn.com)",
+      "WebFetch(domain:health.ettoday.net)"
     ]
   },
   "hooks": {
