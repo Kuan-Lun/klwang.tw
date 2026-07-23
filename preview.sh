@@ -28,6 +28,7 @@ if ! command -v zola >/dev/null 2>&1; then
 fi
 
 zola --root "$SCRIPT_DIR/source-code" serve \
+    --drafts \
     --interface "$ZOLA_PREVIEW_INTERFACE" \
     --port "$ZOLA_PREVIEW_PORT" \
     --base-url "$ZOLA_PREVIEW_BASE_URL"
