@@ -2,7 +2,7 @@
 # Manage a local FlareSolverr container and fetch pages through it.
 #
 # FlareSolverr runs a real headless browser to clear Cloudflare-style
-# "Just a moment..." challenges that block plain curl/WebFetch requests.
+# "Just a moment..." challenges that block plain curl or agent web tools.
 # It's meant to be ephemeral here: start it right before you need it,
 # stop it right after — don't leave a browser-in-a-box idling.
 #

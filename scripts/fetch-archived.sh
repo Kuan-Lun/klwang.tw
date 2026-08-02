@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Fetch a web.archive.org snapshot as a plain static page, bypassing the
-# Cloudflare-style bot challenges that block WebFetch/curl against the
-# live site directly. WebFetch itself refuses web.archive.org URLs
-# outright, so this has to be a plain curl.
+# Cloudflare-style bot challenges that block automated fetches against the
+# live site directly. Some agent web tools refuse web.archive.org URLs, so
+# this helper deliberately uses plain curl.
 #
 # Usage: scripts/fetch-archived.sh <web.archive.org snapshot url>
 

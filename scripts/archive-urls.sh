@@ -3,7 +3,7 @@
 # news/toadd-news.txt), then archive every URL currently sitting in
 # that queue via Save Page Now, one at a time, retrying each once on
 # failure (same retry-once policy as a single-URL run). This means the
-# batch processed on any given run isn't just $ARGUMENTS — it's
+# batch processed on any given run isn't just the command-line arguments — it's
 # whatever's left over from earlier runs too, which is what lets a
 # failed URL get picked up again next time without the caller having
 # to track it separately.
