@@ -1,6 +1,6 @@
 ---
 name: add-news
-description: Archive one or more news URLs and create matching source-code/content/news Markdown entries. Use when the user asks to add, archive, queue, or import news articles into this repository; do not commit the created files.
+description: Archive one or more news URLs, classify them with the repository's shared news taxonomy, and create matching source-code/content/news Markdown entries. Use when the user asks to add, archive, queue, or import news articles into this repository; do not commit the created files.
 ---
 
 # Add news
@@ -8,6 +8,11 @@ description: Archive one or more news URLs and create matching source-code/conte
 Process every URL independently and finish the whole batch even when individual URLs fail. Use the URLs in the user's request plus any URLs already present in `source-code/content/news/toadd-news.txt`. Treat that queue as the source of truth for the batch.
 
 Work from the repository root. Resolve it with `git rev-parse --show-toplevel` when the current directory may be a subdirectory.
+
+Before classifying any article, read `references/news-taxonomy.md`. Treat that
+reference as the normative semantic guidance; existing articles are examples,
+not guaranteed gold labels. The companion TOML file is consumed by repository
+scripts and should not be inferred from Zola's `transparent` setting.
 
 ## 1. Archive the batch
 
@@ -25,7 +30,11 @@ The script adds new URLs to the queue, checks existing `link_to` fields for dupl
 
 If the script prints nothing, ask the user for at least one URL and stop. A failure for one URL must not stop another URL.
 
-Run `scripts/news-context.sh` once for the whole batch. Fetching the original articles and gathering this repository context are independent, so parallelize them when the available tools allow it.
+Run `scripts/news-context.sh` once for the whole batch. Its compact report lists
+slug-prefix conventions, tag frequencies, configured destinations, tag routes,
+and recent examples. Fetching the original articles and gathering this
+repository context are independent, so parallelize them when the available
+tools allow it.
 
 ## 2. Read each source article
 
@@ -59,7 +68,9 @@ If no source yields a reliable title and date, do not guess. Put the URL and its
 
 ## 3. Derive a unique slug
 
-Use the existing slugs printed by `scripts/news-context.sh` to preserve each outlet's established shorthand. Keep a list of slugs selected earlier in the current batch because those are not yet on disk.
+Use the slug-prefix summary printed by `scripts/news-context.sh` to preserve each
+outlet's established shorthand. Keep a list of slugs selected earlier in the
+current batch because those are not yet on disk.
 
 Known shorthands include `udn`, `tvbs`, `setn`, `ettoday`, `chinatimes`, `ltn`, `ftvnews`, `pts`, `mydrivers`, and `ctee`. For a new outlet, strip prefixes such as `www.`, `news.`, or `m.` and the TLD, then use a short lowercase domain code.
 
@@ -71,13 +82,40 @@ Build `<shortcode>-<ids>` from the identifying path or query values in URL order
 
 Examples in this repository include `ftvnews-2026502S07M1`, `tvbs-3230434`, `pts-814538`, `mydrivers-1-1135-1135015`, and `chinatimes-20260708003489-260402`.
 
+After deriving a candidate, check its exact repository-wide uniqueness:
+
+```bash
+scripts/news-context.sh --check-slug "<candidate-slug>"
+```
+
+`AVAILABLE` means it can be used; `EXISTS` prints the conflicting file. Use
+`--all-slugs` only when the compact prefix summary and exact check are
+insufficient.
+
 ## 4. Choose tags and destination
 
-Use `news_tags`, never the site-wide `tags` taxonomy. Judge the primary topic mainly from the title and use the body only to confirm it.
+Use `news_tags`, never the site-wide `tags` taxonomy. Decide the destination and
+tags as separate steps:
 
-The category section from `scripts/news-context.sh` maps each tag-backed category name to its relative path. When the primary tag exactly matches a listed category, put that tag first and write the file under that mapped path, including nested paths. Otherwise, write it directly under `source-code/content/news/` and follow the style of existing root-level tags.
+1. Apply editorial routes first. Police or prosecutor misconduct belongs under
+   `獨立分類/警界醜聞/`; events primarily internal to migrant communities belong
+   under `獨立分類/移工內部社會新聞/`.
+2. Otherwise select one ordinary destination from the article's main editorial
+   frame. Do not derive it mechanically from the first tag. Use the news root
+   only when no configured destination fits.
+3. Then choose tags for retrieval. Use one or two by default; allow three only
+   when all three add independent value. In an ordinary topic folder, prefer
+   its folder tag near the front when natural, but do not add an inaccurate tag
+   merely to mirror the path. Umbrella and editorial destinations use their
+   accurate subject tags instead.
 
-Use one or two tags. Do not create a folder during this workflow; use the `review-news-taxonomy` skill later to identify promotion candidates.
+Follow the conflict boundaries and positive/negative examples in
+`references/news-taxonomy.md`. If two destinations remain equally plausible,
+collect one concise, batched question for the affected items and continue all
+unambiguous items. Do not silently guess or default to the root.
+
+Do not create a folder during this workflow; use the `review-news-taxonomy`
+skill later to identify promotion candidates.
 
 ## 5. Choose the filename
 
@@ -119,11 +157,12 @@ Place every URL in exactly one bucket:
 - **already-archived**
 - **archive-failed**
 - **content-unreadable**
+- **classification-needed**
 - **write-failed**
 
 After the whole batch:
 
-1. Remove exact queue lines only for **created** and **already-archived** URLs. Preserve order and keep **archive-failed**, **content-unreadable**, and **write-failed** URLs for retry.
+1. Remove exact queue lines only for **created** and **already-archived** URLs. Preserve order and keep **archive-failed**, **content-unreadable**, **classification-needed**, and **write-failed** URLs for retry.
 2. Report only non-empty buckets. List created file paths, duplicate matches, failed URLs, archived links for unreadable content, and collision details for failed writes.
-3. Ask one batched question for all **content-unreadable** items, requesting reliable title and date plus any optional description or tags.
+3. Ask one batched question for all **content-unreadable** items, requesting reliable title and date plus any optional description or tags. Include one compact destination question for all **classification-needed** items.
 4. Do not commit or push. Tell the user to review the created files first.

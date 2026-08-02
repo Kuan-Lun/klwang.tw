@@ -1,0 +1,331 @@
+schema_version = 1
+
+[promotion]
+threshold = 3
+
+[[sections]]
+path = "交通安全"
+kind = "topic"
+index = "required"
+expected_transparent = true
+allow_articles = true
+prefer_any_tags = ["交通安全"]
+
+[[sections]]
+path = "偷拍"
+kind = "topic"
+index = "required"
+expected_transparent = true
+allow_articles = true
+prefer_any_tags = ["偷拍"]
+
+[[sections]]
+path = "勞權"
+kind = "topic"
+index = "required"
+expected_transparent = true
+allow_articles = true
+prefer_any_tags = ["勞權"]
+
+[[sections]]
+path = "國軍"
+kind = "topic"
+index = "required"
+expected_transparent = true
+allow_articles = true
+prefer_any_tags = ["國軍"]
+
+[[sections]]
+path = "宮廟"
+kind = "topic"
+index = "required"
+expected_transparent = true
+allow_articles = true
+prefer_any_tags = ["宮廟"]
+
+[[sections]]
+path = "房地產"
+kind = "topic"
+index = "required"
+expected_transparent = true
+allow_articles = true
+prefer_any_tags = ["房地產"]
+
+[[sections]]
+path = "政府"
+kind = "topic"
+index = "required"
+expected_transparent = true
+allow_articles = true
+prefer_any_tags = ["政府"]
+
+[[sections]]
+path = "校園"
+kind = "topic"
+index = "required"
+expected_transparent = true
+allow_articles = true
+prefer_any_tags = ["校園"]
+
+[[sections]]
+path = "檢警法"
+kind = "umbrella"
+index = "required"
+expected_transparent = true
+allow_articles = true
+require_any_tags = ["檢警法", "警察", "檢察官", "法官", "調查官", "公務員"]
+
+[[sections]]
+path = "社會"
+kind = "topic"
+index = "required"
+expected_transparent = true
+allow_articles = true
+prefer_any_tags = ["社會"]
+
+[[sections]]
+path = "移工"
+kind = "topic"
+index = "required"
+expected_transparent = true
+allow_articles = true
+prefer_any_tags = ["移工"]
+
+[[sections]]
+path = "詐騙"
+kind = "topic"
+index = "required"
+expected_transparent = true
+allow_articles = true
+prefer_any_tags = ["詐騙"]
+
+[[sections]]
+path = "貧富差距"
+kind = "topic"
+index = "required"
+expected_transparent = true
+allow_articles = true
+prefer_any_tags = ["貧富差距"]
+
+[[sections]]
+path = "醫療"
+kind = "topic"
+index = "required"
+expected_transparent = true
+allow_articles = true
+prefer_any_tags = ["醫療"]
+
+[[sections]]
+path = "金融業"
+kind = "topic"
+index = "required"
+expected_transparent = true
+allow_articles = true
+prefer_any_tags = ["金融業"]
+
+[[sections]]
+path = "長照"
+kind = "topic"
+index = "required"
+expected_transparent = true
+allow_articles = true
+prefer_any_tags = ["長照"]
+
+[[sections]]
+path = "電力"
+kind = "topic"
+index = "required"
+expected_transparent = true
+allow_articles = true
+prefer_any_tags = ["電力"]
+
+[[sections]]
+path = "霸凌"
+kind = "topic"
+index = "required"
+expected_transparent = true
+allow_articles = true
+prefer_any_tags = ["霸凌"]
+
+[[sections]]
+path = "食安"
+kind = "topic"
+index = "required"
+expected_transparent = true
+allow_articles = true
+prefer_any_tags = ["食安"]
+
+[[sections]]
+path = "獨立分類/移工內部社會新聞"
+kind = "editorial"
+index = "required"
+expected_transparent = false
+allow_articles = true
+require_any_tags = ["移工"]
+
+[[sections]]
+path = "獨立分類/警界醜聞"
+kind = "container"
+index = "required"
+expected_transparent = false
+allow_articles = false
+
+[[sections]]
+path = "獨立分類/警界醜聞/警察"
+kind = "editorial"
+index = "required"
+expected_transparent = true
+allow_articles = true
+require_any_tags = ["警察"]
+
+[[sections]]
+path = "獨立分類/警界醜聞/檢察官"
+kind = "editorial"
+index = "optional"
+expected_transparent = true
+allow_articles = true
+require_any_tags = ["檢察官"]
+
+[[tag_routes]]
+tag = "交通安全"
+destinations = ["交通安全"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "偷拍"
+destinations = ["偷拍"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "勞權"
+destinations = ["勞權"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "國軍"
+destinations = ["國軍"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "宮廟"
+destinations = ["宮廟"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "房地產"
+destinations = ["房地產"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "政府"
+destinations = ["政府"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "校園"
+destinations = ["校園"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "檢警法"
+destinations = ["檢警法"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "社會"
+destinations = ["社會"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "移工"
+destinations = ["移工", "獨立分類/移工內部社會新聞"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "詐騙"
+destinations = ["詐騙"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "貧富差距"
+destinations = ["貧富差距"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "醫療"
+destinations = ["醫療"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "金融業"
+destinations = ["金融業"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "長照"
+destinations = ["長照"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "電力"
+destinations = ["電力"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "霸凌"
+destinations = ["霸凌"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "食安"
+destinations = ["食安"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "警察"
+destinations = ["檢警法", "獨立分類/警界醜聞/警察"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "檢察官"
+destinations = ["檢警法", "獨立分類/警界醜聞/檢察官"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "法官"
+destinations = ["檢警法"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "調查官"
+destinations = ["檢警法"]
+root_action = "review"
+promotion_covered = true
+
+[[tag_routes]]
+tag = "公務員"
+destinations = ["政府", "檢警法"]
+root_action = "review"
+promotion_covered = true
