@@ -29,10 +29,22 @@ if [ $curl_status -eq 0 ]; then
     fi
 fi
 
-# curl failed or returned no redirect (e.g. client-side timeout). The
-# capture job runs independently on archive.org's end, so it may have
-# actually finished — check the Availability API before declaring failure.
+# curl failed or returned no redirect (e.g. client-side timeout, or the
+# HTTP 500 Save Page Now returns to anonymous clients). The capture job
+# runs independently on archive.org's end, so it may have actually
+# finished — look the snapshot up before declaring failure.
 echo "Save request did not return a snapshot directly; checking availability..." >&2
+sleep 5
+
+# The "latest snapshot" redirect is the cheapest lookup and is not subject
+# to the Availability API's rate limit.
+latest=$(curl -sS -m 30 -o /dev/null -w '%{redirect_url}' "https://web.archive.org/web/2/${url}" 2>/dev/null)
+case "$latest" in
+    https://web.archive.org/web/[0-9]*)
+        echo "$latest"
+        exit 0
+        ;;
+esac
 
 available=$(curl -sS -m 20 "https://archive.org/wayback/available?url=${url}")
 snapshot=$(printf '%s' "$available" | python3 -c '

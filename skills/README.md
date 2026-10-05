@@ -30,3 +30,13 @@ Claude Code 需使用支援 symlink skill folder 的 v2.1.203 或更新版本；
 ```bash
 scripts/validate-agent-skills.py
 ```
+
+## 不透過 agent 執行 add-news
+
+`scripts/add-news-ollama.sh` 以本機 Ollama 模型（預設 `qwen3.8:27b`）跑完整個 `add-news` 流程，不需要 Claude Code 或 Codex：
+
+```bash
+scripts/add-news-ollama.sh "https://example.com/article-one" "https://example.com/article-two"
+```
+
+它會封存網址、讀取文章、請模型決定 metadata、依 `references/news-taxonomy.toml` 驗證、寫入內容檔、更新佇列並列出結果分類；結束時卸載模型（若是腳本自行啟動 `ollama serve`，也會一併關閉）。常用選項：`--dry-run` 只分類不寫檔、`--no-think` 關閉思考模式加速、`--keep-model` 結束後保留模型、`--model` 或環境變數 `ADD_NEWS_MODEL` 更換模型。產生的檔案同樣不會自動 commit。
