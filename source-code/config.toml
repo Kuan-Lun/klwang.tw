@@ -67,3 +67,6 @@ fancy_code = true
 # Whether to enable MathJax support
 mathjax = true
 mathjax_dollar_inline_enable = true
+
+[extra.analytics]
+enabled = false
