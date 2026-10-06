@@ -359,7 +359,7 @@ authors = ["王冠倫"]
 
 <details open>
 <summary>UML</summary>
-{% mermaid() %}
+{% <mermaid> %}
 classDiagram
     interface Converter
     Converter : +convert()*
@@ -374,7 +374,7 @@ classDiagram
     Converter <|.. ConvertA
     Converter <|.. ConvertB
     Converter <|.. ConvertC
-{% end %}
+{% </mermaid> %}
 </details>
 
 <details close>
