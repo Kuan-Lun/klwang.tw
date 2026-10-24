@@ -18,8 +18,21 @@ Claude Code 需使用支援 symlink skill folder 的 v2.1.203 或更新版本；
 | `add-news` | `/add-news [url ...]` | `$add-news [url ...]` | 封存新聞並建立內容檔，不 commit |
 | `review-news-taxonomy` | `/review-news-taxonomy` | `$review-news-taxonomy` | 唯讀稽核新聞分類與標籤 |
 | `commit-staged` | `/commit-staged` | `$commit-staged` | 只提交已 staged 的變更，不 push |
+| `commit-changes` | `/commit-changes` | `$commit-changes` | 依變更目的自動分組、stage 並建立一或多筆 commit；支援只預覽計畫，不 push |
 
-兩者也可依 `description` 在符合的自然語言請求中載入 skill；具副作用的 `commit-staged` 仍要求使用者明確提出 commit。
+兩種 agent 也可依 `description` 在符合的自然語言請求中載入 skill；建立 commit 仍要求使用者明確提出 commit 或直接呼叫提交 skill。詢問功能、建立 skill 或只要求預覽，不會提交現有變更。
+
+`commit-changes` 的分組依據見 [公開規範與本專案的採用方式](commit-changes/references/commit-policy.md)：Git 的邏輯變更原則、Google Small CLs 的完整可用單位，以及 Conventional Commits 的訊息語意。它會先列出各組目的、檔案或 hunks、訊息與拆分理由，再依授權自動提交；不按檔案數或副檔名硬拆。
+
+Codex 使用範例（Claude Code 將 `$commit-changes` 換成 `/commit-changes`）：
+
+```text
+$commit-changes
+$commit-changes --dry-run
+$commit-changes 只提交 Apollo 更新相關變更
+```
+
+沒有指定範圍時會檢查 staged、unstaged 與 untracked 變更。`--dry-run` 只列計畫，不改 index 或建立 commit；若只要提交目前 staged 的快照，繼續使用 `commit-staged`。
 
 ## 維護方式
 
