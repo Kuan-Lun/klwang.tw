@@ -1,3 +1,4 @@
 [submodule "source-code/themes/apollo"]
 	path = source-code/themes/apollo
 	url = https://github.com/not-matthias/apollo
+	branch = main
