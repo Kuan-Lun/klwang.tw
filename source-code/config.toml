@@ -24,6 +24,8 @@ generate_feeds = true
 # There is also a built-in template "rss.xml" that renders an RSS 2.0 feed.
 feed_filenames = ["atom.xml", "rss.xml"]
 
+skip_content_templating = ["**/2026-10-24_Synology none 映像檔處理.md"]
+
 [search]
 include_title = true          # Include page titles in the search index
 include_description = true    # Include page descriptions in the search index
